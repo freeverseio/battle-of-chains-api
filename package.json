@@ -24,6 +24,8 @@
     "graphql-tag": "^2.12.6",
     "graphql-yoga": "^5.7.0",
     "node-fetch": "^3.3.2",
+    "reflect-metadata": "^0.2.2",
+    "type-graphql": "^2.0.0-rc.2",
     "wait-on": "^8.0.1"
   },
   "devDependencies": {

@@ -1,28 +1,21 @@
-import { Executor } from '@graphql-tools/utils';
+import { Resolver, Query, Arg, Ctx } from 'type-graphql';
+import { tokenOwnersQuery } from '../queries';
+import { Player } from '../types/player';
 import { parse } from 'graphql';
+@Resolver()
+export class UserResolver {
+  @Query(() => [Player])
+  async users(
+    @Ctx() context: any 
+  ): Promise<Player[]> {
+    const query = tokenOwnersQuery('0xfffffffffffffffffffffffe0000000000000004');
+    const result = await context.indexerExec({
+      document: parse(query),
+      context,
+    });
 
-// Define the `users` resolver function
-export const usersResolver = async (_: any, { where }: any, context: any, indexerExec: Executor) => {
-  const query = `
-    query {
-      tokens(where: { laosContract: "0xfffffffffffffffffffffffe0000000000000001" }) {
-        edges {
-          node {
-            laosContract
-            initialOwner
-            owner
-          }
-        }
-      }
-    }
-  `;
-
-  const result = await indexerExec({
-    document: parse(query),
-    context, // Pass the context to include the auth header
-  }) as any;
-
-  
-
-  return result.data.tokens.edges.map((edge: any) => edge.node);
-};
+    return result.data.tokenOwners.map((owner: any) => {
+      return new Player(owner.owner);
+    });
+  }
+}
