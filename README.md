@@ -1,1 +1,1 @@
-# battle-of-chains
+# battle-of-chains-api
