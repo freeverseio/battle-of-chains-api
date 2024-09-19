@@ -1,5 +1,5 @@
 {
-  "name": "battle-of-chains",
+  "name": "battle-of-chains-api",
   "version": "1.0.0",
   "description": "code for the decentralized battle of chains",
   "main": "index.js",
