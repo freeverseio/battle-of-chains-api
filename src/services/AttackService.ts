@@ -14,21 +14,27 @@ export class AttackService {
       const address = this.getAttackAddress(where.chainId, x!, y!);
       query = attacksQuery(address);
     } else {
-      query = attacksQuery();
+      query = attacksQuery(); 
     }
+  
+    // Ensure the query is a valid string before parsing
+    if (!query) {
+      throw new Error('Generated query is invalid');
+    }
+  
     const result = await this.context.indexerExec({
-        document: parse(query),
-        context: this.context,
+      document: parse(query),
+      context: this.context,
     });
+  
     const attacks = result.data.transfers.map((transfer: any) => {
       const coordinates = CoordinatesHelper.getXYFromAddress(transfer.to);
-      const attack = new Attack({
+      return new Attack({
         from: transfer.from,
         to: transfer.to,
         tokenId: transfer.tokenId,
         coordinates: coordinates,
       });
-      return attack;
     });
     return attacks;
   }

@@ -22,8 +22,14 @@ jest.mock('../types', () => {
     User: jest.fn().mockImplementation((data) => data),
     UserWhereInput: jest.fn().mockImplementation((data) => data),
     Coordinates: jest.fn().mockImplementation((data) => data),
+    Attack: jest.fn().mockImplementation((data) => data),
+    AttackWhereInput: jest.fn().mockImplementation((data) => data),
   };
 });
+
+jest.mock('../queries', () => ({
+  attacksQuery: jest.fn(),
+}));
 
 describe('AttackService', () => {
   const mockContext = {
@@ -34,9 +40,38 @@ describe('AttackService', () => {
     attackService = new AttackService(mockContext);
   });
   describe('getAttacks', () => {
+    
     it('should correctly extract x and y from address', () => {
       const attackAddress =  attackService.getAttackAddress(137, 360690951, 1625316781);
       expect(attackAddress).toBe('0x000000000000000000000089157fb50760e05dad');
+    });
+
+    it('should generate a query without coordinates if `where` is not provided', async () => {
+      const mockAttacksQuery = jest.spyOn(require('../queries'), 'attacksQuery').mockReturnValue(`{
+        attacks {
+          from
+          to
+          tokenId
+        }
+      }`);
+
+      await attackService.getAttacks(); // No `where` provided
+      expect(mockAttacksQuery).toHaveBeenCalledWith(); // Default case
+    });
+
+    it('should generate a query with coordinates when `where` is provided', async () => {
+      const mockAttacksQuery = jest.spyOn(require('../queries'), 'attacksQuery').mockReturnValue(`{
+        attacks(address: "0x000000000000000000000089157fb50760e05dad") {
+          from
+          to
+          tokenId
+        }
+      }`);
+
+      const where = { chainId: 137, coordinates: { x: 360690951, y: 1625316781 } };
+      await attackService.getAttacks(where);
+
+      expect(mockAttacksQuery).toHaveBeenCalledWith('0x000000000000000000000089157fb50760e05dad');
     });
   });
 });
