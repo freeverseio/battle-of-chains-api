@@ -3,10 +3,8 @@ import { createYoga } from 'graphql-yoga';
 import { createServer } from 'http';
 import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import { stitchSchemas } from '@graphql-tools/stitch';
-import { schemaFromExecutor } from '@graphql-tools/wrap';
 import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/usersResolver'; // TypeGraphQL resolver
-import { localSchema } from './sources/local'; // Local schema
+import { UserResolver } from './resolvers/UserResolver'; 
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -27,15 +25,8 @@ async function makeGatewaySchema() {
   // Stitch the TypeGraphQL schema with the remote and local schemas
   const schema = stitchSchemas({
     subschemas: [
-      // {
-      //   schema: await schemaFromExecutor(indexerExec),
-      //   executor: indexerExec,
-      // },
-      // {
-      //   schema: localSchema,
-      // },
       {
-        schema: typeGraphqlSchema, // Add the TypeGraphQL schema here
+        schema: typeGraphqlSchema, 
       },
     ],
   });
@@ -61,13 +52,10 @@ async function makeGatewaySchema() {
       title: 'LAOS Gateway',
       headers: `{"x-api-key": "my-secret-api-key"}`,
       defaultQuery: `
-      query ExampleQuery {
-        users(laosContract: "contract_address") {
-          id
-          owner
-          contract
+      query MyQuery {
+        users {
+          address
         }
-        status
       }
     `,
     },

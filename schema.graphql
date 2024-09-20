@@ -3,10 +3,13 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Player {
-  address: String!
+type Query {
+  users: [User!]!
 }
 
-type Query {
-  users: [Player!]!
+type User {
+  address: String!
+  chainId: Float!
+  x: Float!
+  y: Float!
 }
