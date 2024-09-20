@@ -3,6 +3,9 @@ import { parse } from 'graphql';
 import { User } from '../types';
 import { tokenOwnersQuery } from '../queries';
 import { UserWhereInput } from '../types';
+import { Coordinates } from '../types/coordinates';
+import { CoordinatesHelper } from './CoordinatesHelper';
+
 export class UserService {
   constructor(private context: any) { }
 
@@ -17,7 +20,7 @@ export class UserService {
       return new User({
         address: owner.owner,
         chainId: this.chainIdFromTokenId(owner.randomTokenId),
-        ...this.getXYFromAddress(owner.owner),
+        coordinates: CoordinatesHelper.getXYFromAddress(owner.owner),
       });
     });
   }
@@ -25,20 +28,4 @@ export class UserService {
   chainIdFromTokenId(tokenId: string) {
     return Number((BigInt(tokenId) >> 163n) & 0xFFFFFFFFn);
   }
-
-  getXYFromAddress(address: string) {
-    // Remove the "0x" prefix and convert the address to BigInt
-    let bigIntAddress = BigInt(address);
-
-    // Extract the last 64 bits (x and y coordinates)
-    let x = Number((bigIntAddress >> 32n) & 0xFFFFFFFFn); // Convert x to number
-    let y = Number(bigIntAddress & 0xFFFFFFFFn); // Convert y to number
-
-    return {
-      x,
-      y,
-    };
-  }
-
-  
 }

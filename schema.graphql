@@ -3,15 +3,37 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Attack {
+  coordinates: Coordinates
+  from: String!
+  to: String!
+  tokenId: String!
+}
+
+input AttackWhereInput {
+  chainId: Float
+  coordinates: CoordinatesInput
+}
+
+type Coordinates {
+  x: Float!
+  y: Float!
+}
+
+input CoordinatesInput {
+  x: Float
+  y: Float
+}
+
 type Query {
+  attacks(where: AttackWhereInput): [Attack!]!
   users(where: UserWhereInput): [User!]!
 }
 
 type User {
   address: String!
   chainId: Float!
-  x: Float!
-  y: Float!
+  coordinates: Coordinates
 }
 
 input UserWhereInput {
