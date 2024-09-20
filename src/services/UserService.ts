@@ -1,13 +1,13 @@
 // userService.ts
 import { parse } from 'graphql';
-import { User } from '../types/user';
+import { User } from '../types';
 import { tokenOwnersQuery } from '../queries';
-
+import { UserWhereInput } from '../types';
 export class UserService {
-  constructor(private context: any) {}
+  constructor(private context: any) { }
 
-  async getUsers(): Promise<User[]> {
-    const query = tokenOwnersQuery(process.env.LAOS_BOC_CONTRACT_ADDRESS!);
+  async getUsers(where: UserWhereInput): Promise<User[]> {
+    const query = tokenOwnersQuery(process.env.LAOS_BOC_CONTRACT_ADDRESS!, where.address);
     const result = await this.context.indexerExec({
       document: parse(query),
       context: this.context,
@@ -35,8 +35,10 @@ export class UserService {
     let y = Number(bigIntAddress & 0xFFFFFFFFn); // Convert y to number
 
     return {
-      x, 
+      x,
       y,
     };
   }
+
+  
 }

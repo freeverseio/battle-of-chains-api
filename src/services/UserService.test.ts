@@ -18,9 +18,10 @@ const mockContext = {
 };
 
 // Mock User class
-jest.mock('../types/user', () => {
+jest.mock('../types', () => {
   return {
     User: jest.fn().mockImplementation((data) => data),
+    UserWhereInput: jest.fn().mockImplementation((data) => data),
   };
 });
 
@@ -33,7 +34,7 @@ describe('UserService', () => {
 
   describe('getUsers', () => {
     it('should return users with correct data', async () => {
-      const users = await userService.getUsers();
+      const users = await userService.getUsers({});
 
       expect(mockContext.indexerExec).toHaveBeenCalled();
       expect(users.length).toBe(1);
@@ -46,14 +47,14 @@ describe('UserService', () => {
     });
 
     it('should correctly calculate chainId from tokenId', async () => {
-      const users = await userService.getUsers();
+      const users = await userService.getUsers({});
       const chainId = userService.chainIdFromTokenId(mockOwner.randomTokenId);
       
       expect(users[0].chainId).toBe(chainId);
     });
 
     it('should correctly calculate x and y from address', async () => {
-      const users = await userService.getUsers();
+      const users = await userService.getUsers({});
       const { x, y } = userService.getXYFromAddress(mockOwner.owner);
 
       expect(users[0].x).toBe(x);
