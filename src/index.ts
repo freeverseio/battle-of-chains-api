@@ -1,10 +1,13 @@
 import 'reflect-metadata'; // Required by TypeGraphQL
+import * as dotenv from 'dotenv';
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'http';
 import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/UserResolver'; 
+
+
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -38,6 +41,7 @@ async function makeGatewaySchema() {
 }
 
 (async () => {
+  dotenv.config();
   const {schema, indexerExec} = await makeGatewaySchema();
 
   // Yoga server setup
@@ -55,6 +59,9 @@ async function makeGatewaySchema() {
       query MyQuery {
         users {
           address
+          chainId
+          x
+          y
         }
       }
     `,

@@ -7,7 +7,7 @@ export class UserService {
   constructor(private context: any) {}
 
   async getUsers(): Promise<User[]> {
-    const query = tokenOwnersQuery('0xfffffffffffffffffffffffe00000000000000bb');
+    const query = tokenOwnersQuery(process.env.LAOS_BOC_CONTRACT_ADDRESS!);
     const result = await this.context.indexerExec({
       document: parse(query),
       context: this.context,
