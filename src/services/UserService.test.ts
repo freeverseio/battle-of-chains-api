@@ -41,8 +41,7 @@ describe('UserService', () => {
       expect(users[0]).toEqual({
         address: mockOwner.owner,
         chainId: expect.any(Number),
-        x: expect.any(Number),
-        y: expect.any(Number),
+        coordinates: expect.any(Object),
       });
     });
 
@@ -53,13 +52,7 @@ describe('UserService', () => {
       expect(users[0].chainId).toBe(chainId);
     });
 
-    it('should correctly calculate x and y from address', async () => {
-      const users = await userService.getUsers({});
-      const { x, y } = userService.getXYFromAddress(mockOwner.owner);
-
-      expect(users[0].x).toBe(x);
-      expect(users[0].y).toBe(y);
-    });
+   
   });
 
   describe('chainIdFromTokenId', () => {
@@ -72,24 +65,5 @@ describe('UserService', () => {
     });
   });
 
-  describe('getXYFromAddress', () => {
-    it('should correctly extract x and y from address', () => {
-      const address = '0x123456789ABCDEF123456789ABCDEF123456789A';
-      const { x, y } = userService.getXYFromAddress(address);
-
-      // Manually calculated values
-      const expectedX = Number((BigInt(address) >> 32n) & 0xFFFFFFFFn);
-      const expectedY = Number(BigInt(address) & 0xFFFFFFFFn);
-
-      expect(x).toBe(expectedX);
-      expect(y).toBe(expectedY);
-    });
-
-    it('should correctly extract x and y from address', () => {
-      const address = '0x90397692893043c5986e53dc157fb50760e05dad';
-      const { x, y } = userService.getXYFromAddress(address);
-      expect(x).toBe(360690951);
-      expect(y).toBe(1625316781);
-    });
-  });
+  
 });

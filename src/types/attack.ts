@@ -2,17 +2,21 @@ import { ObjectType, Field } from 'type-graphql';
 import { Coordinates } from './coordinates';
 
 @ObjectType()
-export class User {
+export class Attack {
   @Field(() => String)
-  address!: string;
+  from!: string;
 
-  @Field(() => Number)
-  chainId?: number;
+  @Field(() => String)
+  to!: string;
+
+  @Field(() => String)
+  tokenId!: string;
 
   @Field(() => Coordinates, { nullable: true })
   coordinates?: Coordinates;
 
-  constructor(props: Partial<User>) {
+  constructor(props: Partial<Attack>) {
     Object.assign(this, props);
   }
 }
+

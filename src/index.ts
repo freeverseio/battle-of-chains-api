@@ -6,6 +6,8 @@ import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/UserResolver'; 
+import { AttackResolver } from './resolvers/AttackResolver';
+
 
 
 
@@ -20,7 +22,7 @@ async function makeGatewaySchema() {
 
   // Build TypeGraphQL schema
   const typeGraphqlSchema = await buildSchema({
-    resolvers: [UserResolver], // Add your TypeGraphQL resolvers here
+    resolvers: [UserResolver, AttackResolver], 
     emitSchemaFile: true, // Optional: emit schema file if needed
     validate: false, // Disable auto-validation if you don't need it
   });
