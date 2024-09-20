@@ -20,7 +20,6 @@ export class AttackService {
         document: parse(query),
         context: this.context,
     });
-    console.log(result);
     const attacks = result.data.transfers.map((transfer: any) => {
       const coordinates = CoordinatesHelper.getXYFromAddress(transfer.to);
       const attack = new Attack({
@@ -29,10 +28,8 @@ export class AttackService {
         tokenId: transfer.tokenId,
         coordinates: coordinates,
       });
-      console.log('attack', attack);
       return attack;
     });
-    console.log('attacks', attacks);
     return attacks;
   }
 
