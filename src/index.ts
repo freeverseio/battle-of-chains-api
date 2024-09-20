@@ -1,11 +1,13 @@
+import 'reflect-metadata'; // Required by TypeGraphQL
+import * as dotenv from 'dotenv';
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'http';
 import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import { stitchSchemas } from '@graphql-tools/stitch';
-import { schemaFromExecutor } from '@graphql-tools/wrap';
-import { typeDefs } from './types';
-import { resolvers } from './resolvers';
-import { localSchema } from './sources/local'; // Local schema
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './resolvers/UserResolver'; 
+
+
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -16,47 +18,56 @@ async function makeGatewaySchema() {
     }),
   });
 
-  return stitchSchemas({
-    // subschemas: [
-    //   {
-    //     schema: await schemaFromExecutor(indexerExec),
-    //     executor: indexerExec,
-    //   },
-    //   {
-    //     schema: localSchema,
-    //   },
-    // ],
-    typeDefs,
-    resolvers: resolvers(indexerExec), // Pass indexerExec to the resolvers
+  // Build TypeGraphQL schema
+  const typeGraphqlSchema = await buildSchema({
+    resolvers: [UserResolver], // Add your TypeGraphQL resolvers here
+    emitSchemaFile: true, // Optional: emit schema file if needed
+    validate: false, // Disable auto-validation if you don't need it
   });
+
+  // Stitch the TypeGraphQL schema with the remote and local schemas
+  const schema = stitchSchemas({
+    subschemas: [
+      {
+        schema: typeGraphqlSchema, 
+      },
+    ],
+  });
+
+  return {
+    schema: schema,
+    indexerExec: indexerExec,
+  };
 }
 
-
-
 (async () => {
-  const schema = await makeGatewaySchema();
+  dotenv.config();
+  const {schema, indexerExec} = await makeGatewaySchema();
+
   // Yoga server setup
   const gatewayApp = createYoga({
-    schema: schema,
+    schema,
     context: ({ request }) => ({
       authHeader: request.headers.get('authorization'),
+      indexerExec, // Pass indexerExec to the context for resolvers
     }),
     maskedErrors: false,
     graphiql: {
       title: 'LAOS Gateway',
       headers: `{"x-api-key": "my-secret-api-key"}`,
       defaultQuery: `
-      query ExampleQuery {
+      query MyQuery {
         users {
-          laosContract
-          initialOwner
-          owner
+          address
+          chainId
+          x
+          y
         }
-        status
       }
     `,
     },
   });
+
   const server = createServer(gatewayApp);
   server.listen(4000, () => console.log('Gateway running at http://localhost:4000/graphql'));
 })();
