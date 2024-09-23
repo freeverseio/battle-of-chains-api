@@ -8,8 +8,7 @@ import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/UserResolver'; 
 import { AttackResolver } from './resolvers/AttackResolver';
 import { AssetResolver } from './resolvers/AssetResolver';
-
-
+import { ContractResolver } from './resolvers/ContractResolver';
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -22,7 +21,7 @@ async function makeGatewaySchema() {
 
   // Build TypeGraphQL schema
   const typeGraphqlSchema = await buildSchema({
-    resolvers: [UserResolver, AttackResolver, AssetResolver], 
+    resolvers: [UserResolver, AttackResolver, AssetResolver, ContractResolver], 
     emitSchemaFile: true, // Optional: emit schema file if needed
     validate: false, // Disable auto-validation if you don't need it
   });
