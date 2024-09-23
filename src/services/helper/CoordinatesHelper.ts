@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/coordinates';
+import { Coordinates } from '../../types/coordinates';
 
 export class CoordinatesHelper {
   static getXYFromAddress(address: string): Coordinates {

@@ -2,7 +2,7 @@ import { Attack, AttackWhereInput } from '../types';
 import { attacksQuery } from '../queries';
 import { parse } from 'graphql';
 import { Coordinates } from '../types/coordinates';
-import { CoordinatesHelper } from './CoordinatesHelper';
+import { CoordinatesHelper } from './helper/CoordinatesHelper';
 
 export class AttackService {
   constructor(private context: any) { }
