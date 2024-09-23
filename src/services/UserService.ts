@@ -4,7 +4,7 @@ import { User } from '../types';
 import { tokenOwnersQuery } from '../queries';
 import { UserWhereInput } from '../types';
 import { Coordinates } from '../types/coordinates';
-import { CoordinatesHelper } from './CoordinatesHelper';
+import { CoordinatesHelper } from './helper/CoordinatesHelper';
 
 export class UserService {
   constructor(private context: any) { }
