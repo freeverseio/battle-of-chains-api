@@ -38,6 +38,15 @@ input AttackWhereInput {
   coordinates: CoordinatesInput
 }
 
+type Contract {
+  address: String!
+  chainId: Float!
+}
+
+input ContractWhereInput {
+  chainId: Float
+}
+
 type Coordinates {
   x: Float!
   y: Float!
@@ -51,6 +60,7 @@ input CoordinatesInput {
 type Query {
   assets(where: AssetWhereInput): [Asset!]!
   attacks(where: AttackWhereInput): [Attack!]!
+  contracts(where: ContractWhereInput): [Contract!]!
   users(where: UserWhereInput): [User!]!
 }
 
