@@ -1,7 +1,8 @@
-export const attacksQuery = (to?: string) => `
+export const attacksQueryTemplate = `
 query MyQuery {
   transfers(where: {
-    ${to ? `to: "${to}",` : `to_startsWith: "0x000000000000000000000",`}
+    contractAddress: "#contractAddressPlaceholder",
+    #toPlaceholder
   }, orderBy: TIMESTAMP_DESC) {
     from
     to
