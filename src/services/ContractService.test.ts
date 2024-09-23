@@ -25,14 +25,14 @@ describe('ContractService', () => {
   });
 
   test('should return all ownership contracts if no filter is provided', async () => {
-    process.env.OWNERSHIP_CONTRACTS = '{"polygon":"0x1", "ethereum":"0x2", "arbitrum":"0x3"}';
+    process.env.OWNERSHIP_CONTRACTS = '{"137":"0x1", "1":"0x2", "42161":"0x3"}';
 
     const contracts = await service.getOwnershipContracts();
     
     expect(contracts).toEqual([
-      { address: '0x1', chainId: 'polygon' },
-      { address: '0x2', chainId: 'ethereum' },
-      { address: '0x3', chainId: 'arbitrum' }
+      { address: '0x2', chainId: 1 },
+      { address: '0x1', chainId: 137 },
+      { address: '0x3', chainId: 42161 }
     ]);
 
     expect(Contract).toHaveBeenCalledTimes(3);
@@ -41,7 +41,7 @@ describe('ContractService', () => {
   test('should return an empty array if no contracts match the chainId filter', async () => {
     process.env.OWNERSHIP_CONTRACTS = '{"polygon":"0x1", "ethereum":"0x2", "arbitrum":"0x3"}';
 
-    const where = { chainId: 'nonexistentNetwork' };
+    const where = { chainId: 23 };
     const contracts = await service.getOwnershipContracts(where);
     
     expect(contracts).toEqual([]);

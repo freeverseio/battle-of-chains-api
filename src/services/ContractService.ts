@@ -13,14 +13,14 @@ export class ContractService {
           contracts.push(
             new Contract({
               address: String(address),
-              chainId: chainId,
+              chainId: Number(chainId),
             })        
           )
-        }else if(where?.chainId == chainId) {
+        }else if(String(where?.chainId) == chainId) {
           contracts.push(
             new Contract({
               address: String(address),
-              chainId: chainId,
+              chainId: Number(chainId),
             })        
           )
           break;
