@@ -1,7 +1,8 @@
 export const tokenOwnersQuery = (contractAddress: string, owner?: string) => `
     query {
-      tokenOwners(where: {laosContract: "${contractAddress}"${owner ? `, owner: "${owner}"` : ''}}) {
+      tokenOwners(where: {contractAddress: "${contractAddress}"${owner ? `, owner: "${owner}"` : ''}}) {
         owner
+        initialOwner
         randomTokenId
       }
     }

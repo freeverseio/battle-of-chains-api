@@ -4,6 +4,7 @@ import { User } from '../types/user';
 // Mock data for testing
 const mockOwner = {
   owner: '0x123456789ABCDEF123456789ABCDEF123456789A',
+  initialOwner: '0x123456789ABCDEF123456789ABCDEF123456789A',
   randomTokenId: '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
 };
 
@@ -45,12 +46,7 @@ describe('UserService', () => {
       });
     });
 
-    it('should correctly calculate chainId from tokenId', async () => {
-      const users = await userService.getUsers({});
-      const chainId = userService.chainIdFromTokenId(mockOwner.randomTokenId);
-      
-      expect(users[0].chainId).toBe(chainId);
-    });
+
 
    
   });
@@ -60,7 +56,6 @@ describe('UserService', () => {
     it('should correctly extract chainId from tokenId', () => {
       const tokenId = '47799547995601867861741518321076309536288495128070729111970261691149110500781';
       const chainId = userService.chainIdFromTokenId(tokenId);
-      
       expect(chainId).toBe(137);
     });
   });

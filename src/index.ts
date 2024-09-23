@@ -20,6 +20,7 @@ async function makeGatewaySchema() {
     }),
   });
 
+
   // Build TypeGraphQL schema
   const typeGraphqlSchema = await buildSchema({
     resolvers: [UserResolver, AttackResolver, AssetResolver], 

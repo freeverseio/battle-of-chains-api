@@ -10,7 +10,7 @@ export const assetsQueryTemplate = `
   query MyQuery {
     tokens(
       where: {
-        laosContract: "#contractAddressPlaceholder"
+        contractAddress: "#contractAddressPlaceholder"
         #ownerPlaceholder
         #tokenIdPlaceholder
       },
