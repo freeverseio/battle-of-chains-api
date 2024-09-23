@@ -3,8 +3,8 @@ import { Contract } from '../types';
 
 jest.mock('../types', () => {
   return {
-    Contract: jest.fn().mockImplementation(({ address, network }) => {
-      return { address, network }; // Return the correct object structure
+    Contract: jest.fn().mockImplementation(({ address, chainId }) => {
+      return { address, chainId }; // Return the correct object structure
     }),
   };
 });
@@ -30,18 +30,18 @@ describe('ContractService', () => {
     const contracts = await service.getOwnershipContracts();
     
     expect(contracts).toEqual([
-      { address: '0x1', network: 'polygon' },
-      { address: '0x2', network: 'ethereum' },
-      { address: '0x3', network: 'arbitrum' }
+      { address: '0x1', chainId: 'polygon' },
+      { address: '0x2', chainId: 'ethereum' },
+      { address: '0x3', chainId: 'arbitrum' }
     ]);
 
     expect(Contract).toHaveBeenCalledTimes(3);
   });
   
-  test('should return an empty array if no contracts match the network filter', async () => {
+  test('should return an empty array if no contracts match the chainId filter', async () => {
     process.env.OWNERSHIP_CONTRACTS = '{"polygon":"0x1", "ethereum":"0x2", "arbitrum":"0x3"}';
 
-    const where = { network: 'nonexistentNetwork' };
+    const where = { chainId: 'nonexistentNetwork' };
     const contracts = await service.getOwnershipContracts(where);
     
     expect(contracts).toEqual([]);

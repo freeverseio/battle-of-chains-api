@@ -8,19 +8,19 @@ export class ContractService {
       const ownershipContracts = process.env.OWNERSHIP_CONTRACTS || '{}';
       const parsedOwnershipContracts = JSON.parse(ownershipContracts);
       const contracts = [];
-      for (const [network, address] of Object.entries(parsedOwnershipContracts)) {
+      for (const [chainId, address] of Object.entries(parsedOwnershipContracts)) {
         if(!where) {
           contracts.push(
             new Contract({
               address: String(address),
-              network: network,
+              chainId: chainId,
             })        
           )
-        }else if(where?.network == network) {
+        }else if(where?.chainId == chainId) {
           contracts.push(
             new Contract({
               address: String(address),
-              network: network,
+              chainId: chainId,
             })        
           )
           break;

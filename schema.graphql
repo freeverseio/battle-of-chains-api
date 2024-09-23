@@ -40,11 +40,11 @@ input AttackWhereInput {
 
 type Contract {
   address: String!
-  network: String!
+  chainId: String!
 }
 
 input ContractWhereInput {
-  network: String
+  chainId: String
 }
 
 type Coordinates {
