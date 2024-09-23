@@ -55,15 +55,17 @@ async function makeGatewaySchema() {
     }),
     maskedErrors: false,
     graphiql: {
-      title: 'LAOS Gateway',
+      title: 'The Battle of Chains API',
       headers: `{"x-api-key": "my-secret-api-key"}`,
       defaultQuery: `
       query MyQuery {
         users {
           address
           chainId
-          x
-          y
+          coordinates {
+            x
+            y
+          }
         }
       }
     `,
