@@ -35,13 +35,14 @@ describe('UserService', () => {
 
   describe('getUsers', () => {
     it('should return users with correct data', async () => {
+      process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
       const users = await userService.getUsers({});
 
       expect(mockContext.indexerExec).toHaveBeenCalled();
       expect(users.length).toBe(1);
       expect(users[0]).toEqual({
         address: mockOwner.owner,
-        chainId: expect.any(Number),
         coordinates: expect.any(Object),
       });
     });

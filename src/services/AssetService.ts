@@ -7,7 +7,8 @@ export class AssetService {
   constructor(private context: any) { }
 
   async getAssets(where?: AssetWhereInput): Promise<Asset[]> {
-    const query = QueryBuilderService.buildAssetsQuery(process.env.POLYGON_BOC_CONTRACT_ADDRESS!, where);
+    const ownershipContracts = JSON.parse(process.env.OWNERSHIP_CONTRACTS!);
+    const query = QueryBuilderService.buildAssetsQuery(ownershipContracts["137"], where); // TODO: for all chains
     
     const result = await this.context.indexerExec({
       document: parse(query),

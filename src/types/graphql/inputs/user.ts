@@ -5,6 +5,5 @@ export class UserWhereInput {
 
   @Field({ nullable: true })
   address?: string;
-
  
 }

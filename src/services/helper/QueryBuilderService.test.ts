@@ -103,7 +103,7 @@ describe('QueryBuilderService - buildAttacksQuery', () => {
   });
 
   it('should correctly extract x and y from address', () => {
-    const attackAddress =  QueryBuilderService.getAttackAddress(137, 360690951, 1625316781);
+    const attackAddress =  QueryBuilderService.getAttackAddress(137, "360690951", "1625316781");
     expect(attackAddress).toBe('0x000000000000000000000089157fb50760e05dad');
   });
 
@@ -111,14 +111,14 @@ describe('QueryBuilderService - buildAttacksQuery', () => {
     const where: AttackWhereInput = {
       chainId: 137,
       coordinates: {
-        x: 50,
-        y: 100
+        x: "50",
+        y: "100"
       }
     };
     const query = QueryBuilderService.buildAttacksQuery('0xfffffffffffffffffffffffe00000000000000bb', where);
 
     // Assert that the full 'to' address with coordinates is applied
-    const expectedAddress = QueryBuilderService.getAttackAddress(137, 50, 100);
+    const expectedAddress = QueryBuilderService.getAttackAddress(137, "50", "100");
     expect(query).toContain(`to: "${expectedAddress}"`);
   });
 

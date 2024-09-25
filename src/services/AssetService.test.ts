@@ -66,6 +66,8 @@ describe('AssetService', () => {
 
     it('should return the list of assets', async () => {
       // Mock the buildAssetsQuery method to return a mock query
+      process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
       const mockQuery = 'mock_query_string';
       jest.spyOn(QueryBuilderService, 'buildAssetsQuery').mockReturnValueOnce(mockQuery);
 
@@ -74,11 +76,11 @@ describe('AssetService', () => {
       mockContext.indexerExec.mockResolvedValue(mockResponse);
 
       // Mock the coordinates from the owner address
-      jest.spyOn(CoordinatesHelper, 'getXYFromAddress').mockReturnValue({ x: 10, y: 20 });
+      jest.spyOn(CoordinatesHelper, 'getXYFromAddress').mockReturnValue({ x: "10", y: "20" });
 
       const assets = await assetService.getAssets();
 
-      expect(QueryBuilderService.buildAssetsQuery).toHaveBeenCalledWith(process.env.POLYGON_BOC_CONTRACT_ADDRESS, undefined);
+      expect(QueryBuilderService.buildAssetsQuery).toHaveBeenCalledWith("0xe4785c845a2dbed6958bcd0983a18ba686ebc261", undefined);
       expect(mockContext.indexerExec).toHaveBeenCalledWith({
         document: parse(mockQuery),
         context: mockContext,
@@ -91,7 +93,8 @@ describe('AssetService', () => {
         image: 'image1.png',
         description: 'Description 1',
         attributes: [{ trait_type: 'Color', value: 'Blue' }],
-        coordinates: { x: 10, y: 20 },
+        coordinates: { x: "10", y: "20" },
+        type: 0,
       }));
       expect(assets[1]).toEqual(expect.objectContaining({
         tokenId: '1234567890',
@@ -99,11 +102,14 @@ describe('AssetService', () => {
         image: 'image2.png',
         description: 'Description 2',
         attributes: [{ trait_type: 'Size', value: 'Large' }],
-        coordinates: { x: 10, y: 20 },
+        coordinates: { x: "10", y: "20" },
+        type: 0,
       }));
     });
 
     it('should return an empty array if no assets are returned', async () => {
+      process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
       const emptyResponse = {
         data: {
           tokens: {

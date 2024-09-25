@@ -32,6 +32,8 @@ jest.mock('../queries', () => ({
 }));
 
 describe('AttackService', () => {
+  process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
   const mockContext = {
     indexerExec: jest.fn().mockResolvedValue(mockResponse),
   };

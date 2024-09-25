@@ -4,11 +4,11 @@ import { IsOptional } from 'class-validator';
 
 @InputType()
 export class CoordinatesInput {
-  @Field(() => Number, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  x?: number;
+  x?: string;
 
-  @Field(() => Number, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  y?: number;
+  y?: string;
 }

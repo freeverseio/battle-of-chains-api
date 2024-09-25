@@ -2,9 +2,9 @@ import { ObjectType, Field } from 'type-graphql';
 
 @ObjectType()
 export class Coordinates {
-  @Field(() => Number)
-  x!: number;
+  @Field(() => String)
+  x!: string;
 
-  @Field(() => Number)
-  y!: number;
+  @Field(() => String)
+  y!: string;
 }
