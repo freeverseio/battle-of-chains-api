@@ -31,7 +31,7 @@ export class QueryBuilderService {
     return query;
   }
 
-  static getAttackAddress(targetChainId: number, x?: number, y?: number) {
+  static getAttackAddress(targetChainId: number, x?: string, y?: string) {
     const targetChainIdBig = BigInt(targetChainId);
     if (x === undefined || y === undefined) {
         // Return only the chainId part

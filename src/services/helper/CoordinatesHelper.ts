@@ -9,8 +9,8 @@ export class CoordinatesHelper {
     let y = Number(bigIntAddress & 0xFFFFFFFFn); // Convert y to number
 
     return {
-      x,
-      y,
+      x: String(x),
+      y: String(y),
     };
   }
 
@@ -25,8 +25,8 @@ export class CoordinatesHelper {
     const y = addressBigInt & mask80bits;
 
     return { 
-      x: Number(x), 
-      y: Number(y) 
+      x: String(x), 
+      y: String(y) 
     };
 }
 

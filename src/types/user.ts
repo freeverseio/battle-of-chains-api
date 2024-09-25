@@ -6,9 +6,6 @@ export class User {
   @Field(() => String)
   address!: string;
 
-  @Field(() => Number)
-  chainId?: number;
-
   @Field(() => Coordinates, { nullable: true })
   coordinates?: Coordinates;
 

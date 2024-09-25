@@ -10,8 +10,8 @@ export class UserService {
   constructor(private context: any) { }
 
   async getUsers(where: UserWhereInput): Promise<User[]> {
-
-    const query = tokenOwnersQuery(process.env.POLYGON_BOC_CONTRACT_ADDRESS!, where?.address);
+    const ownershipContracts = JSON.parse(process.env.OWNERSHIP_CONTRACTS!);
+    const query = tokenOwnersQuery(ownershipContracts["42161"], where?.address); // TODO: for all chains
     const result = await this.context.indexerExec({
       document: parse(query),
       context: this.context,
@@ -21,20 +21,17 @@ export class UserService {
       if (owner.initialOwner != owner.owner) {
         return [
           new User({
-            address: owner.initialOwner,
-            chainId: this.chainIdFromTokenId(owner.randomTokenId),
+            address: owner.initialOwner,            
             coordinates: CoordinatesHelper.getXYFromAddress(owner.initialOwner),
           }),
           new User({
             address: owner.owner,
-            chainId: this.chainIdFromTokenId(owner.randomTokenId),
             coordinates: CoordinatesHelper.getXYFromAddress(owner.owner),
           }),
         ];
       } else {
         return new User({
           address: owner.initialOwner,
-          chainId: this.chainIdFromTokenId(owner.randomTokenId),
           coordinates: CoordinatesHelper.getXYFromAddress(owner.initialOwner),
         });
       }

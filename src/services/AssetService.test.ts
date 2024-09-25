@@ -74,7 +74,7 @@ describe('AssetService', () => {
       mockContext.indexerExec.mockResolvedValue(mockResponse);
 
       // Mock the coordinates from the owner address
-      jest.spyOn(CoordinatesHelper, 'getXYFromAddress').mockReturnValue({ x: 10, y: 20 });
+      jest.spyOn(CoordinatesHelper, 'getXYFromAddress').mockReturnValue({ x: "10", y: "20" });
 
       const assets = await assetService.getAssets();
 
@@ -91,7 +91,8 @@ describe('AssetService', () => {
         image: 'image1.png',
         description: 'Description 1',
         attributes: [{ trait_type: 'Color', value: 'Blue' }],
-        coordinates: { x: 10, y: 20 },
+        coordinates: { x: "10", y: "20" },
+        type: 0,
       }));
       expect(assets[1]).toEqual(expect.objectContaining({
         tokenId: '1234567890',
@@ -99,7 +100,8 @@ describe('AssetService', () => {
         image: 'image2.png',
         description: 'Description 2',
         attributes: [{ trait_type: 'Size', value: 'Large' }],
-        coordinates: { x: 10, y: 20 },
+        coordinates: { x: "10", y: "20" },
+        type: 0,
       }));
     });
 

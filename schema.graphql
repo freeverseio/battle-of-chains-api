@@ -49,13 +49,13 @@ input ContractWhereInput {
 }
 
 type Coordinates {
-  x: Float!
-  y: Float!
+  x: String!
+  y: String!
 }
 
 input CoordinatesInput {
-  x: Float
-  y: Float
+  x: String
+  y: String
 }
 
 type Query {
@@ -67,7 +67,6 @@ type Query {
 
 type User {
   address: String!
-  chainId: Float!
   coordinates: Coordinates
 }
 
