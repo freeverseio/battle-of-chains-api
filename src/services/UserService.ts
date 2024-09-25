@@ -11,7 +11,7 @@ export class UserService {
 
   async getUsers(where: UserWhereInput): Promise<User[]> {
     const ownershipContracts = JSON.parse(process.env.OWNERSHIP_CONTRACTS!);
-    const query = tokenOwnersQuery(ownershipContracts["42161"], where?.address); // TODO: for all chains
+    const query = tokenOwnersQuery(ownershipContracts["137"], where?.address); // TODO: for all chains
     const result = await this.context.indexerExec({
       document: parse(query),
       context: this.context,

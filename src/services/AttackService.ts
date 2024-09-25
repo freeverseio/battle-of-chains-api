@@ -7,7 +7,8 @@ export class AttackService {
   constructor(private context: any) { }
 
   async getAttacks(where?: AttackWhereInput): Promise<Attack[]> {
-    let query = QueryBuilderService.buildAttacksQuery(process.env.POLYGON_BOC_CONTRACT_ADDRESS!, where);
+    const ownershipContracts = JSON.parse(process.env.OWNERSHIP_CONTRACTS!);
+    const query = QueryBuilderService.buildAssetsQuery(ownershipContracts["137"], where); // TODO: for all chains
     
     // Ensure the query is a valid string before parsing
     if (!query) {
@@ -20,7 +21,7 @@ export class AttackService {
     });
   
     const attacks = result.data.transfers.map((transfer: any) => {
-      const coordinates = CoordinatesHelper.getXYFromAddress(transfer.to);
+      const coordinates = CoordinatesHelper.getXYFromAttackAddress(transfer.to);
       return new Attack({
         from: transfer.from,
         to: transfer.to,

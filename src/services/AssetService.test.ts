@@ -66,6 +66,8 @@ describe('AssetService', () => {
 
     it('should return the list of assets', async () => {
       // Mock the buildAssetsQuery method to return a mock query
+      process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
       const mockQuery = 'mock_query_string';
       jest.spyOn(QueryBuilderService, 'buildAssetsQuery').mockReturnValueOnce(mockQuery);
 
@@ -78,7 +80,7 @@ describe('AssetService', () => {
 
       const assets = await assetService.getAssets();
 
-      expect(QueryBuilderService.buildAssetsQuery).toHaveBeenCalledWith(process.env.POLYGON_BOC_CONTRACT_ADDRESS, undefined);
+      expect(QueryBuilderService.buildAssetsQuery).toHaveBeenCalledWith("0xe4785c845a2dbed6958bcd0983a18ba686ebc261", undefined);
       expect(mockContext.indexerExec).toHaveBeenCalledWith({
         document: parse(mockQuery),
         context: mockContext,
@@ -106,6 +108,8 @@ describe('AssetService', () => {
     });
 
     it('should return an empty array if no assets are returned', async () => {
+      process.env.OWNERSHIP_CONTRACTS='{"137":"0xe4785c845a2dbed6958bcd0983a18ba686ebc261", "1":"0x2", "42161":"0x404394075a609e570f2ed6b6cab22fedd923d796"}';
+
       const emptyResponse = {
         data: {
           tokens: {
