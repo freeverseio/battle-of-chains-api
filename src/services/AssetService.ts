@@ -1,4 +1,4 @@
-import { Asset, AssetWhereInput } from "../types";
+import { Asset, AssetWhereInput, AssetType } from "../types";
 import { CoordinatesHelper } from "./helper/CoordinatesHelper";
 import { QueryBuilderService } from "./helper/QueryBuilderService";
 import { parse } from 'graphql';
@@ -22,10 +22,15 @@ export class AssetService {
         image: edge.node.image,
         description: edge.node.description,
         attributes: edge.node.attributes,
+        type: this.getAssetTypeFromTokenId(edge.node.tokenId),
         coordinates,
       });
     });
 
     return assets;
   }
+   getAssetTypeFromTokenId(tokenId: string): number {
+    const result = (BigInt(tokenId) >> 160n) & 0x7n;
+    return Number(result);
+}
 }
