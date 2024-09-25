@@ -45,9 +45,6 @@ describe('UserService', () => {
         coordinates: expect.any(Object),
       });
     });
-
-
-
    
   });
 

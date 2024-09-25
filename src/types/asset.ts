@@ -4,6 +4,9 @@ import { Coordinates } from './coordinates';
 @ObjectType()
 export class Asset {
 
+  @Field(() => Number, { nullable: true })
+  type!: number;
+
   @Field(() => String, { nullable: true })
   name?: string;
 
@@ -37,4 +40,10 @@ export class AssetAttributes {
 
   @Field(() => String)
   value!: string;
+}
+
+export enum AssetType {
+  ARTIFACT = 1,
+  CHARACTER = 2,
+  FACTORY = 3,
 }
