@@ -11,6 +11,7 @@ type Asset {
   image: String
   name: String
   tokenId: String!
+  type: Float
 }
 
 type AssetAttributes {
