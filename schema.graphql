@@ -62,6 +62,7 @@ type Query {
   assets(where: AssetWhereInput): [Asset!]!
   attacks(where: AttackWhereInput): [Attack!]!
   contracts(where: ContractWhereInput): [Contract!]!
+  status: String!
   users(where: UserWhereInput): [User!]!
 }
 
