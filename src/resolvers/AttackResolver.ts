@@ -10,9 +10,9 @@ export class AttackResolver {
     const attackService = new AttackService(context);
     return attackService.getAttacks(where);
   }
-  @Query(() => String)
+  @Query(() => [String])
   async status(
-    @Ctx() context: any): Promise<String> {
-    return 'JurgenSaidthis'
+    @Ctx() context: any): Promise<String[]> {
+    return ['JurgenSaidthis', 'JurgenDeniedThis']
   }
 }

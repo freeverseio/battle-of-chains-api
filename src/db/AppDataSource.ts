@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { Match, MatchEvent, Country, Timezone, League, Team, Player, Tactics, Training, Verse, MatchHistory, PlayerHistory, TacticsHistory, TeamHistory } from "./entity";
+import { UserLog } from "./entity";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -22,20 +22,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,  // Set to true if you want to automatically sync schema changes in development
   logging: false,
   entities: [ 
-    MatchEvent, 
-    Country, 
-    Timezone, 
-    League, 
-    Team,
-    TeamHistory,
-    Match, 
-    MatchHistory,
-    Player, 
-    PlayerHistory,
-    Tactics, 
-    TacticsHistory,
-    Training, 
-    Verse
+    UserLog
   ],
   migrations: [],
   subscribers: [],
