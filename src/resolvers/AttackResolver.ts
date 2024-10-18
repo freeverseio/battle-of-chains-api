@@ -22,19 +22,8 @@ export class ChainResolver {
   @Query(() => [ChainOutput])
   async chains(
     @Ctx() context: any): Promise<ChainOutput[]> {
-      console.log("AppDataSource.getRepository(Chain)... ");
       const repository = AppDataSource.getRepository(Chain);
-      console.log("AppDataSource.getRepository(Chain)...DONE ");
-      console.log("const count = await repository.count()... ");
-      const count = await repository.count();
-      console.log("const count = await repository.count()...DONE ", count);
       const allChains = await repository.find();
-      const allChainsOutput = allChains.map(entry => new ChainOutput(entry));
-      console.log(allChainsOutput);
-      const chain = new ChainOutput({"chain_id": 2, "name": "Pol", "score": 4})
-      console.log([chain]);
-      // return [chain, chain];
-      return allChains;
-      // return [chain];
+      return allChains.map(entry => new ChainOutput(entry));;
   }
 }
