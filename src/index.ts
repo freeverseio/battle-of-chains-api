@@ -1,14 +1,12 @@
-import 'reflect-metadata'; // Required by TypeGraphQL
+import { buildHTTPExecutor } from '@graphql-tools/executor-http';
+import { stitchSchemas } from '@graphql-tools/stitch';
 import * as dotenv from 'dotenv';
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'http';
-import { buildHTTPExecutor } from '@graphql-tools/executor-http';
-import { stitchSchemas } from '@graphql-tools/stitch';
+import 'reflect-metadata'; // Required by TypeGraphQL
 import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/UserResolver'; 
+import { AppDataSource } from './db/AppDataSource';
 import { AttackResolver } from './resolvers/AttackResolver';
-import { AssetResolver } from './resolvers/AssetResolver';
-import { ContractResolver } from './resolvers/ContractResolver';
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -22,7 +20,7 @@ async function makeGatewaySchema() {
 
   // Build TypeGraphQL schema
   const typeGraphqlSchema = await buildSchema({
-    resolvers: [UserResolver, AttackResolver, AssetResolver, ContractResolver], 
+    resolvers: [AttackResolver], 
     emitSchemaFile: true, // Optional: emit schema file if needed
     validate: false, // Disable auto-validation if you don't need it
   });
@@ -71,6 +69,11 @@ async function makeGatewaySchema() {
     `,
     },
   });
+
+
+  AppDataSource.initialize()
+  .catch((error) => console.log("Error: ", error));
+
 
   const server = createServer(gatewayApp);
   server.listen(4000, () => console.log('Gateway running at http://localhost:4000/graphql'));

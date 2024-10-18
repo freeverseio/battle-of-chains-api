@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column } from "typeorm";
 
-@Entity('userlog')
+@Entity('user_logs')
 export class UserLog {
   @PrimaryColumn({ type: 'integer' })
   timestamp!: number;
