@@ -50,14 +50,10 @@ export class ReprocessResolver {
     const eventProcessor = new EventProcessor();
     await eventProcessor.reprocess();
     const processedUsers = eventProcessor.getUsers();
-    console.log(processedUsers);
-    console.log('DONE');
     const repository = AppDataSource.getRepository(User);
     for (let user of processedUsers) {
       const existingUser = await repository.findOne({ where: { address: user.address } });
-      console.log('existingUser', existingUser);
       if (!existingUser) {
-        console.log('adding user', user);
         const newUser = new User();
         newUser.address = user.address;
         newUser.name = user.name;
@@ -68,8 +64,5 @@ export class ReprocessResolver {
       }
     }
     return processedUsers.length;
-    // const allUsers = processedUsers.map(entry => new UserOutput(entry));
-    // const repository = AppDataSource.getRepository(User);
-    // const allAssets = await repository.find();
   }
 }
