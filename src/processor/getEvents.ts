@@ -1,6 +1,6 @@
 import { JoinedChainEvent, MultichainMintEvent } from "./types";
 
-const reasonableDate = 1729253900;
+const reasonableDate = 1729253900*1000;
 const reasonableBlock = 1000;
 const oneSec = 1000;
 
