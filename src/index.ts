@@ -6,7 +6,7 @@ import { createServer } from 'http';
 import 'reflect-metadata'; // Required by TypeGraphQL
 import { buildSchema } from 'type-graphql';
 import { AppDataSource } from './db/AppDataSource';
-import { AttackResolver, ChainResolver } from './resolvers/AttackResolver';
+import { AttackResolver, ChainResolver, UserResolver } from './resolvers/AttackResolver';
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
@@ -20,7 +20,7 @@ async function makeGatewaySchema() {
 
   // Build TypeGraphQL schema
   const typeGraphqlSchema = await buildSchema({
-    resolvers: [AttackResolver, ChainResolver], 
+    resolvers: [AttackResolver, ChainResolver, UserResolver], 
     emitSchemaFile: true, // Optional: emit schema file if needed
     validate: false, // Disable auto-validation if you don't need it
   });

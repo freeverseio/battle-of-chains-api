@@ -12,4 +12,13 @@ type ChainOutput {
 type Query {
   chains: [ChainOutput!]!
   status: [String!]!
+  users: [UserOutput!]!
+}
+
+type UserOutput {
+  address: String!
+  homechain: Int!
+  joined_timestamp: Int!
+  name: String!
+  score: Int!
 }
