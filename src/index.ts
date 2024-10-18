@@ -6,7 +6,7 @@ import { createServer } from 'http';
 import 'reflect-metadata'; // Required by TypeGraphQL
 import { buildSchema } from 'type-graphql';
 import { AppDataSource } from './db/AppDataSource';
-import { AttackResolver, ChainResolver, UserResolver, AssetResolver } from './resolvers/AttackResolver';
+import { AttackResolver, ChainResolver, UserResolver, AssetResolver } from './resolvers/MainResolver';
 
 async function makeGatewaySchema() {
   // Remote executor for your indexer service
