@@ -3,30 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Asset {
-  attributes: [AssetAttributes!]
-  chainId: Float
-  coordinates: Coordinates
-  description: String
-  image: String
-  name: String
-  tokenId: String!
-  type: Float
-}
-
-type AssetAttributes {
-  trait_type: String!
-  value: String!
-}
-
-input AssetWhereInput {
-  chainId: Float
-  coordinates: CoordinatesInput
-  cursor: String
-  owner: String
-  tokenId: String
-}
-
 type Attack {
   coordinates: Coordinates
   from: String!
@@ -37,15 +13,6 @@ type Attack {
 input AttackWhereInput {
   chainId: Float
   coordinates: CoordinatesInput
-}
-
-type Contract {
-  address: String!
-  chainId: Float!
-}
-
-input ContractWhereInput {
-  chainId: Float
 }
 
 type Coordinates {
@@ -59,18 +26,6 @@ input CoordinatesInput {
 }
 
 type Query {
-  assets(where: AssetWhereInput): [Asset!]!
   attacks(where: AttackWhereInput): [Attack!]!
-  contracts(where: ContractWhereInput): [Contract!]!
   status: [String!]!
-  users(where: UserWhereInput): [User!]!
-}
-
-type User {
-  address: String!
-  coordinates: Coordinates
-}
-
-input UserWhereInput {
-  address: String
 }
