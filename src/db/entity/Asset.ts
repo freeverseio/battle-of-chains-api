@@ -18,5 +18,8 @@ export class Asset {
   owner!: string;
 
   @Column({ type: 'integer' })
-  score!: number;
+  xp!: number;
+
+  @Column({ type: 'integer' })
+  health!: number;
 }

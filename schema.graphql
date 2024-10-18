@@ -3,6 +3,16 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AssetOutput {
+  chain_id: Int!
+  creation_timestamp: Int!
+  health: Int!
+  owner: String!
+  token_id: String!
+  type: String!
+  xp: Int!
+}
+
 type ChainOutput {
   chain_id: Int!
   name: String!
@@ -10,6 +20,7 @@ type ChainOutput {
 }
 
 type Query {
+  assets: [AssetOutput!]!
   chains: [ChainOutput!]!
   status: [String!]!
   users: [UserOutput!]!

@@ -1,8 +1,9 @@
-import { Resolver, Query, Ctx, Arg } from 'type-graphql';
+import { Resolver, Query, Ctx } from 'type-graphql';
 import { AppDataSource } from '../db/AppDataSource';
-import { UserLog, Chain, User } from '../db/entity';
+import { UserLog, Chain, User, Asset } from '../db/entity';
 import { ChainOutput } from '../types/chain';
 import { UserOutput } from '../types/user';
+import { AssetOutput } from '../types/asset';
 @Resolver()
 export class AttackResolver {
   @Query(() => [String])
@@ -32,5 +33,13 @@ export class UserResolver {
     const repository = AppDataSource.getRepository(User);
     const allUsers = await repository.find();
     return allUsers.map(entry => new UserOutput(entry));;
+  }
+}
+export class AssetResolver {
+  @Query(() => [AssetOutput])
+  async assets(@Ctx() context: any): Promise<AssetOutput[]> {
+    const repository = AppDataSource.getRepository(Asset);
+    const allAssets = await repository.find();
+    return allAssets.map(entry => new AssetOutput(entry));;
   }
 }

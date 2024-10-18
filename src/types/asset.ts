@@ -12,7 +12,7 @@ export class AssetOutput {
   type!: string;
 
   @Field(() => Int)
-  joined_timestamp!: number;
+  creation_timestamp!: number;
 
   @Field(() => String)
   owner!: string;
