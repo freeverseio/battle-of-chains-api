@@ -49,16 +49,7 @@ async function main() {
             processMultichainMint(multichainMintEvents[idxMultichainMint]);
             idxMultichainMint += 1;
         }
-
     }
-
-    // for (const event of joinedChainEvents) {
-    //     console.log(`JoinedChain Event - User: ${event._user}, Nickname: ${event._nickname}, Timestamp: ${event.timestamp}`);
-    // }
-    // for (const event of multichainMintEvents) {
-    //     console.log(`multichainMintEvents Event - User: ${event._user}, Type: ${event._type}, Timestamp: ${event.timestamp}`);
-    // }
-
 } catch (error) {
     console.error("Error fetching joinedchainevents:", error);
   }
