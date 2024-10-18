@@ -46,10 +46,10 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
       {
         _tokenId: BigInt(123456789),
         _user: "0x2222222222222222222222222222222222222222",
-        _type: 42,
+        _type: 3,
         _homeChain: 2,
-        timestamp: new Date(reasonableDate + 1000),
-        blockNumber: reasonableBlock + 1000,
+        timestamp: new Date(reasonableDate + 2000),
+        blockNumber: reasonableBlock + 2000,
         blockHash: "0xghi789",
         txHash: "0xjkl012",
         logIndex: 2,
@@ -57,7 +57,7 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
       {
         _tokenId: BigInt(123456789),
         _user: "0x2211111111111111111111111111111111111122",
-        _type: 42,
+        _type: 2,
         _homeChain: 2,
         timestamp: new Date(reasonableDate + 1000),
         blockNumber: reasonableBlock + 1000,
@@ -68,14 +68,15 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
       {
         _tokenId: BigInt(123456789),
         _user: "0x2222222222222222222222222222222222222222",
-        _type: 42,
+        _type: 1,
         _homeChain: 2,
-        timestamp: new Date(reasonableDate + 2000),
-        blockNumber: reasonableBlock + 2000,
+        timestamp: new Date(reasonableDate + 1000),
+        blockNumber: reasonableBlock + 1000,
         blockHash: "0xghi789",
         txHash: "0xjkl012",
-        logIndex: 2,
+        logIndex: 1,
       },
+
     ];
     setTimeout(() => resolve(events), 1000); // Simulate a delay
   });
