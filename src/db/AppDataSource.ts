@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { UserLog } from "./entity";
+import { UserLog, Chain } from "./entity";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -22,7 +22,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,  // Set to true if you want to automatically sync schema changes in development
   logging: false,
   entities: [ 
-    UserLog
+    UserLog, Chain,
   ],
   migrations: [],
   subscribers: [],

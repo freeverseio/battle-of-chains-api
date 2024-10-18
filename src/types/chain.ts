@@ -1,17 +1,17 @@
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
-export class Chain {
-  @Field(() => Number)
-  chainId!: number;
+export class ChainOutput {
+  @Field(() => Int)
+  chain_id!: number;
 
-  @Field(() => Number)
+  @Field(() => Int)
   score!: number;
 
   @Field(() => String)
   name!: string;
 
-  constructor(props: Partial<Chain>) {
+  constructor(props: Partial<ChainOutput>) {
     Object.assign(this, props);
   }
 }
