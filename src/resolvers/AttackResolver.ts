@@ -1,6 +1,7 @@
 import { Resolver, Query, Ctx, Arg } from 'type-graphql';
 import { AppDataSource } from '../db/AppDataSource';
 import { UserLog } from '../db/entity';
+import { Chain } from '../types/chain';
 @Resolver()
 export class AttackResolver {
   @Query(() => [String])
@@ -16,5 +17,12 @@ export class AttackResolver {
       const all = await repository.find();
       return all.map(entry => entry.comment);
   }
-  
+}
+export class ChainResolver {
+  @Query(() => [Chain])
+  async chains(
+    @Ctx() context: any): Promise<Chain[]> {
+      const chain = new Chain({"chainId": 2, "name": "Pol", "score": 4})
+      return [chain, chain];
+  }
 }
