@@ -1,16 +1,25 @@
-import { getEvents } from "./getEvents";
+import { getJoinedChainEvents } from './getEvents';
+import { JoinedChainEvent} from './types';
 
 async function main() {
   try {
     console.log("Fetching events...");
-    const events = await getEvents();
+    const events: JoinedChainEvent[] = await getJoinedChainEvents(); // Ensure events has the correct type
 
-    console.log("Events fetched. Processing each event:");
+    // Sort the events by blockNumber, and logIndex if blockNumber matches
+    const sortedEvents = events.sort((a: JoinedChainEvent, b: JoinedChainEvent) => {
+        // First, compare block numbers
+        if (a.blockNumber !== b.blockNumber) {
+          return a.blockNumber - b.blockNumber;
+        }
+  
+        // If block numbers are the same, sort by logIndex
+        return a.logIndex - b.logIndex;
+      });
+
     for (const event of events) {
       if ('_nickname' in event) {
         console.log(`JoinedChain Event - User: ${event._user}, HomeChain: ${event._homeChain}, Nickname: ${event._nickname}`);
-      } else {
-        console.log(`MultichainMint Event - TokenID: ${event._tokenId}, User: ${event._user}, Type: ${event._type}`);
       }
     }
   } catch (error) {

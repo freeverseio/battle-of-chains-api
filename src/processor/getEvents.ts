@@ -1,21 +1,21 @@
-import { JoinedChainType, RawMultichainMint } from "./types";
+import { JoinedChainEvent, MultichainMintEvent } from "./types";
 
 const reasonableDate = 1729253900;
 const reasonableBlock = 1000;
 
-export async function getJoinedChainEvents(): Promise<JoinedChainType[]> {
+export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
   return new Promise((resolve) => {
-    const events: JoinedChainType[] = [
+    const events: JoinedChainEvent[] = [
       {
-        _user: "0x1111111111111111111111111111111111111111",
+        _user: "0x3311111111111111111111111111111111111133",
         _homeChain: 127,
-        _nickname: "Alice",
-        timestamp: new Date(reasonableDate),
-        blockNumber: reasonableBlock,
-        blockHash: "0xabc123",
-        txHash: "0xdef456",
+        _nickname: "Carol",
+        timestamp: new Date(1729253900 + 100),
+        blockNumber: reasonableBlock + 10,
+        blockHash: "0xabc567",
+        txHash: "0xdef789",
         logIndex: 0,
-      },      
+      },
       {
         _user: "0x2211111111111111111111111111111111111122",
         _homeChain: 127,
@@ -27,22 +27,22 @@ export async function getJoinedChainEvents(): Promise<JoinedChainType[]> {
         logIndex: 1,
       },
       {
-        _user: "0x3311111111111111111111111111111111111133",
+        _user: "0x1111111111111111111111111111111111111111",
         _homeChain: 127,
-        _nickname: "Carol",
-        timestamp: new Date(1729253900 + 100),
-        blockNumber: reasonableBlock + 10,
-        blockHash: "0xabc567",
-        txHash: "0xdef789",
+        _nickname: "Alice",
+        timestamp: new Date(reasonableDate),
+        blockNumber: reasonableBlock,
+        blockHash: "0xabc123",
+        txHash: "0xdef456",
         logIndex: 0,
-      }
+      },      
     ];
     setTimeout(() => resolve(events), 1000); // Simulate a delay
   });
 }
-export async function getMultichainMintEvents(): Promise<RawMultichainMint[]> {
+export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> {
   return new Promise((resolve) => {
-    const events: RawMultichainMint[] = [
+    const events: MultichainMintEvent[] = [
       {
         _tokenId: BigInt(123456789),
         _user: "0x2222222222222222222222222222222222222222",

@@ -1,4 +1,4 @@
-export type JoinedChainType = {
+export type JoinedChainEvent = {
     _user: string;
     _homeChain: number;
     _nickname: string;
@@ -9,7 +9,7 @@ export type JoinedChainType = {
     logIndex: number;
 };
 
-export type RawMultichainMint = {
+export type MultichainMintEvent = {
     _tokenId: bigint;
     _user: string;
     _type: number;
@@ -21,4 +21,4 @@ export type RawMultichainMint = {
     logIndex: number;
   }
 
-  export type Event = JoinedChainType | RawMultichainMint;
+  export type Event = JoinedChainEvent | MultichainMintEvent;
