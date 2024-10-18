@@ -1,3 +1,8 @@
+export enum EventType {
+  JoinedChainEvent,
+  MultichainMintEvent
+}
+
 export type JoinedChainEvent = {
     _user: string;
     _homeChain: number;
@@ -20,5 +25,3 @@ export type MultichainMintEvent = {
     txHash: string;
     logIndex: number;
   }
-
-  export type Event = JoinedChainEvent | MultichainMintEvent;
