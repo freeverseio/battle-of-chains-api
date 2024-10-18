@@ -25,3 +25,11 @@ export type MultichainMintEvent = {
     txHash: string;
     logIndex: number;
   }
+
+  export type UserType = {
+    address: string;
+    homeChain: number;
+    name: string;
+    joined_timestamp: Date;
+    score: number;
+};
