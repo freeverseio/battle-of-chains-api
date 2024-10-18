@@ -3,29 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Attack {
-  coordinates: Coordinates
-  from: String!
-  to: String!
-  tokenId: String!
-}
-
-input AttackWhereInput {
-  chainId: Float
-  coordinates: CoordinatesInput
-}
-
-type Coordinates {
-  x: String!
-  y: String!
-}
-
-input CoordinatesInput {
-  x: String
-  y: String
-}
-
 type Query {
-  attacks(where: AttackWhereInput): [Attack!]!
   status: [String!]!
 }
