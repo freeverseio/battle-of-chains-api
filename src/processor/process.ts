@@ -1,27 +1,4 @@
-export type JoinedChainType = {
-    _user: string;
-    _homeChain: number;
-    _nickname: string;
-    timestamp: Date;
-    blockNumber: number;
-    blockHash: string;
-    txHash: string;
-    logIndex: number;
-};
-
-export type RawMultichainMint = {
-    _tokenId: bigint;
-    _user: string;
-    _type: number;
-    _homeChain: number;
-    timestamp: Date;
-    blockNumber: number;
-    blockHash: string;
-    txHash: string;
-    logIndex: number;
-  }
-
-type Event = JoinedChainType | RawMultichainMint;
+import { JoinedChainType, RawMultichainMint, Event } from "./types";
 
 async function getEvents(): Promise<Event[]> {
   return new Promise((resolve) => {
