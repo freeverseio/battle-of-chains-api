@@ -14,7 +14,7 @@ function indexOfSmallest(arr: Date[]): number {
     return smallestIndex;
 }
 
-class EventProcessor {
+export class EventProcessor {
     private users: UserType[] = [];
 
     processJoinedChain(event: JoinedChainEvent): void {

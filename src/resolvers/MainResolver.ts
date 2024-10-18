@@ -1,9 +1,10 @@
-import { Resolver, Query, Ctx } from 'type-graphql';
+import { Resolver, Query, Ctx, Int } from 'type-graphql';
 import { AppDataSource } from '../db/AppDataSource';
 import { UserLog, Chain, User, Asset } from '../db/entity';
 import { ChainOutput } from '../types/chain';
 import { UserOutput } from '../types/user';
 import { AssetOutput } from '../types/asset';
+import { EventProcessor } from '../processor/process';
 @Resolver()
 export class AttackResolver {
   @Query(() => [String])
@@ -32,7 +33,7 @@ export class UserResolver {
   async users(@Ctx() context: any): Promise<UserOutput[]> {
     const repository = AppDataSource.getRepository(User);
     const allUsers = await repository.find();
-    return allUsers.map(entry => new UserOutput(entry));;
+    return allUsers.map(entry => new UserOutput(entry));
   }
 }
 export class AssetResolver {
@@ -41,5 +42,19 @@ export class AssetResolver {
     const repository = AppDataSource.getRepository(Asset);
     const allAssets = await repository.find();
     return allAssets.map(entry => new AssetOutput(entry));;
+  }
+}
+export class ReprocessResolver {
+  @Query(() => Number)
+  async reprocess(@Ctx() context: any): Promise<Number> {
+    const eventProcessor = new EventProcessor();
+    await eventProcessor.reprocess();
+    const processedUsers = eventProcessor.getUsers();
+    console.log(processedUsers);
+    console.log('DONE');
+    return processedUsers.length;
+    // const allUsers = processedUsers.map(entry => new UserOutput(entry));
+    // const repository = AppDataSource.getRepository(User);
+    // const allAssets = await repository.find();
   }
 }
