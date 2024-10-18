@@ -2,6 +2,7 @@ import { JoinedChainEvent, MultichainMintEvent } from "./types";
 
 const reasonableDate = 1729253900;
 const reasonableBlock = 1000;
+const oneSec = 1000;
 
 export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
   return new Promise((resolve) => {
@@ -10,7 +11,7 @@ export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
         _user: "0x3311111111111111111111111111111111111133",
         _homeChain: 127,
         _nickname: "Carol",
-        timestamp: new Date(1729253900 + 100),
+        timestamp: new Date(reasonableDate + 10 * oneSec),
         blockNumber: reasonableBlock + 10,
         blockHash: "0xabc567",
         txHash: "0xdef789",
@@ -48,8 +49,8 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         _user: "0x2222222222222222222222222222222222222222",
         _type: 3,
         _homeChain: 2,
-        timestamp: new Date(reasonableDate + 2000),
-        blockNumber: reasonableBlock + 2000,
+        timestamp: new Date(reasonableDate + 2 * oneSec),
+        blockNumber: reasonableBlock +  2 * oneSec,
         blockHash: "0xghi789",
         txHash: "0xjkl012",
         logIndex: 2,
@@ -59,7 +60,7 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         _user: "0x2211111111111111111111111111111111111122",
         _type: 2,
         _homeChain: 2,
-        timestamp: new Date(reasonableDate + 1000),
+        timestamp: new Date(reasonableDate + oneSec),
         blockNumber: reasonableBlock + 1000,
         blockHash: "0xghi789",
         txHash: "0xjkl012",
@@ -70,7 +71,7 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         _user: "0x2222222222222222222222222222222222222222",
         _type: 1,
         _homeChain: 2,
-        timestamp: new Date(reasonableDate + 1000),
+        timestamp: new Date(reasonableDate + oneSec),
         blockNumber: reasonableBlock + 1000,
         blockHash: "0xghi789",
         txHash: "0xjkl012",

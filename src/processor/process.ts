@@ -15,12 +15,12 @@ function indexOfSmallest(arr: Date[]): number {
 }
 
 function processJoinedChain(event: JoinedChainEvent): void {
-    console.log(`Processing JoinedChain Event for user: ${event._user}, HomeChain: ${event._homeChain}, Timestamp: ${event.timestamp}`);
+    console.log(`Processing JoinedChain Event ${event.timestamp}, ${event._user}, HomeChain: ${event._homeChain}, Timestamp: ${event.timestamp}`);
 }
 
 // Dummy implementation for processMultichainMint
 function processMultichainMint(event: MultichainMintEvent): void {
-    console.log(`Processing MultichainMint Event for user: ${event._user}, TokenID: ${event._tokenId}, Timestamp: ${event.timestamp}`);
+    console.log(`Processing MultichainMint Event ${event.timestamp}, ${event._user}, TokenID: ${event._tokenId}, Timestamp: ${event.timestamp}`);
 }
 
 async function main() {
@@ -36,13 +36,11 @@ async function main() {
     let idxMultichainMint = 0;
 
     for (let i = 0; i < nEvents; i++) {
-        console.log("idxJoinedChain, idxJoinedChain", idxJoinedChain, idxMultichainMint);
         const nextEventTypeToProcess = indexOfSmallest([
             idxJoinedChain < nJoinedChain ? joinedChainEvents[idxJoinedChain].timestamp : infiniteDate,
             idxMultichainMint < nMultichainMint ? multichainMintEvents[idxMultichainMint].timestamp : infiniteDate,
         ]);
         
-        console.log('EventType', nextEventTypeToProcess);
         if (nextEventTypeToProcess == EventType.JoinedChainEvent) {
             processJoinedChain(joinedChainEvents[idxJoinedChain]);
             idxJoinedChain += 1;
