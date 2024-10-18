@@ -21,7 +21,7 @@ export class EventProcessor {
         console.log(`Processing JoinedChain Event ${event.timestamp}, ${event._user}, HomeChain: ${event._homeChain}, Timestamp: ${event.timestamp}`);
         const newUser: UserType = {
             address: event._user,
-            homeChain: event._homeChain,
+            homechain: event._homeChain,
             name: event._nickname,
             joined_timestamp: event.timestamp,
             score: 44,

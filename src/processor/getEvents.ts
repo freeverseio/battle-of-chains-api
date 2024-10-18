@@ -9,7 +9,7 @@ export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
     const events: JoinedChainEvent[] = [
       {
         _user: "0x3311111111111111111111111111111111111133",
-        _homeChain: 127,
+        _homeChain: 137,
         _nickname: "Carol",
         timestamp: new Date(reasonableDate + 10 * oneSec),
         blockNumber: reasonableBlock + 10,
@@ -19,7 +19,7 @@ export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
       },
       {
         _user: "0x2211111111111111111111111111111111111122",
-        _homeChain: 127,
+        _homeChain: 137,
         _nickname: "Bob",
         timestamp: new Date(reasonableDate),
         blockNumber: reasonableBlock,
@@ -29,7 +29,7 @@ export async function getJoinedChainEvents(): Promise<JoinedChainEvent[]> {
       },
       {
         _user: "0x1111111111111111111111111111111111111111",
-        _homeChain: 127,
+        _homeChain: 137,
         _nickname: "Alice",
         timestamp: new Date(reasonableDate),
         blockNumber: reasonableBlock,

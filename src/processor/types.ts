@@ -28,7 +28,7 @@ export type MultichainMintEvent = {
 
   export type UserType = {
     address: string;
-    homeChain: number;
+    homechain: number;
     name: string;
     joined_timestamp: Date;
     score: number;

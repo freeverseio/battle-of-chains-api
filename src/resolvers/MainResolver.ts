@@ -52,6 +52,21 @@ export class ReprocessResolver {
     const processedUsers = eventProcessor.getUsers();
     console.log(processedUsers);
     console.log('DONE');
+    const repository = AppDataSource.getRepository(User);
+    for (let user of processedUsers) {
+      const existingUser = await repository.findOne({ where: { address: user.address } });
+      console.log('existingUser', existingUser);
+      if (!existingUser) {
+        console.log('adding user', user);
+        const newUser = new User();
+        newUser.address = user.address;
+        newUser.name = user.name;
+        newUser.homechain = user.homechain;
+        newUser.joined_timestamp = user.joined_timestamp.getDate();
+        newUser.score = user.score;
+        repository.insert(newUser);
+      }
+    }
     return processedUsers.length;
     // const allUsers = processedUsers.map(entry => new UserOutput(entry));
     // const repository = AppDataSource.getRepository(User);
