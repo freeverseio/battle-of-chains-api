@@ -49,8 +49,9 @@ export class ReprocessResolver {
   async reprocess(@Ctx() context: any): Promise<Number> {
     const eventProcessor = new EventProcessor();
     await eventProcessor.reprocess();
+
+    // Add users
     const processedUsers = eventProcessor.getUsers();
-    const repository = AppDataSource.getRepository(User);
     const usersToInsert: User[] = [];
     for (let user of processedUsers) {
       const newUser = new User();
@@ -62,8 +63,31 @@ export class ReprocessResolver {
       usersToInsert.push(newUser);
     }
     if (usersToInsert.length > 0) {
+      const repository = AppDataSource.getRepository(User);
       await repository.save(usersToInsert);
     }
-    return processedUsers.length;
+
+    // Add assets
+    const processedAssets = eventProcessor.getAssets();
+    const assetsToInsert: Asset[] = [];
+    for (let asset of processedAssets) {
+      const newAsset = new Asset();
+      newAsset.chain_id = asset.chain_id;
+      newAsset.token_id = asset.token_id;
+      newAsset.type = asset.type;
+      newAsset.creation_timestamp = asset.creation_timestamp.getDate();
+      newAsset.owner = asset.owner;
+      newAsset.xp = asset.xp;
+      newAsset.health = asset.health;
+      assetsToInsert.push(newAsset);
+    }
+    console.log('ASSETS:');
+    console.log(assetsToInsert);
+    if (assetsToInsert.length > 0) {
+      const repositoryAssets = AppDataSource.getRepository(Asset);
+      await repositoryAssets.save(assetsToInsert);
+    }
+
+    return processedUsers.length + assetsToInsert.length;
   }
 }

@@ -63,9 +63,12 @@ export class EventProcessor {
         }
     }
 
-    // Method to get all users
     getUsers(): UserType[] {
         return this.users;
+    }
+
+    getAssets(): AssetType[] {
+        return this.assets;
     }
 
     async addChains(): Promise<void> {

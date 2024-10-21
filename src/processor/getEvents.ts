@@ -46,7 +46,7 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
     const events: MultichainMintEvent[] = [
       {
         _tokenId: BigInt(123456789),
-        _user: "0x2222222222222222222222222222222222222222",
+        _user: "0x1111111111111111111111111111111111111111",
         _type: 3,
         _homeChain: 2,
         timestamp: new Date(reasonableDate + 2 * oneSec),
@@ -56,7 +56,7 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         logIndex: 2,
       },
       {
-        _tokenId: BigInt(123456789),
+        _tokenId: BigInt(9123456789),
         _user: "0x2211111111111111111111111111111111111122",
         _type: 2,
         _homeChain: 2,
@@ -67,8 +67,8 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         logIndex: 2,
       },
       {
-        _tokenId: BigInt(123456789),
-        _user: "0x2222222222222222222222222222222222222222",
+        _tokenId: BigInt(99123456789),
+        _user: "0x3311111111111111111111111111111111111133",
         _type: 1,
         _homeChain: 2,
         timestamp: new Date(reasonableDate + oneSec),
