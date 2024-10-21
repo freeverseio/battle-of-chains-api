@@ -3,6 +3,7 @@ export enum EventType {
   MultichainMintEvent,
   AttackEvent,
   ChainActionProposalEvent,
+  UpgradeEvent,
 }
 
 export enum ChainActionProposalOption {
@@ -39,7 +40,7 @@ export type MultichainMintEvent = {
     blockHash: string;
     txHash: string;
     logIndex: number;
-  }
+};
 
 export interface AttackEvent {
   _tokenIds: string[];
@@ -66,6 +67,18 @@ export interface ChainActionProposalEvent {
     attackAddress: string;
   };
   _comment: string;
+  timestamp: Date;
+  blockNumber: number;
+  blockHash: string;
+  txHash: string;
+  logIndex: number;
+}
+
+export type UpgradeEvent = {
+  _operator: string;
+  _user: string;
+  _chain: number;
+  _tokenId: string;
   timestamp: Date;
   blockNumber: number;
   blockHash: string;

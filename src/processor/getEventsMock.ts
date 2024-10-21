@@ -1,4 +1,4 @@
-import { JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, ChainActionProposalOption } from "./types";
+import { JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, ChainActionProposalOption, UpgradeEvent } from "./types";
 
 const reasonableDate = 1729253900*1000;
 const reasonableBlock = 1000;
@@ -179,6 +179,24 @@ export async function getChainActionProposalEvents(): Promise<ChainActionProposa
         blockNumber: reasonableBlock + 9000,
         blockHash: "0xghi78dsddd9",
         txHash: "0xjkl01ssds2",
+        logIndex: 0,
+      },
+    ];
+    setTimeout(() => resolve(events), 1000); // Simulate a delay
+  });
+}
+export async function getUpgradeEvents(): Promise<UpgradeEvent[]> {
+  return new Promise((resolve) => {
+    const events: UpgradeEvent[] = [
+      {
+        _operator: "0x3311111111111111111111111111111111111133",
+        _user: "0x2211111111111111111111111111111111111122",
+        _chain: 1,
+        _tokenId: '123456789',
+        timestamp: new Date(reasonableDate + 353200 * oneSec),
+        blockNumber: reasonableBlock + 45000,
+        blockHash: "0xghi782ddd9",
+        txHash: "0xjkl014ss2",
         logIndex: 0,
       },
     ];

@@ -1,10 +1,16 @@
 import { Chain } from '../db/entity';
-import { getAttackEvents, getChainActionProposalEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEventsMock';
+import {
+    getAttackEvents,
+    getChainActionProposalEvents,
+    getJoinedChainEvents,
+    getMultichainMintEvents,
+    getUpgradeEvents,
+} from './getEventsMock';
 import { getChains } from './getChains';
 import { sortEvents } from './sortEvents';
 import {
-    EventType, ChainActionProposalOption,
-    JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent,
+    EventType,
+    JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, UpgradeEvent,
     UserType, AssetType, CurrentPeriodChainActionProposalType,
 } from './types';
 import murmurhash from 'murmurhash';
@@ -45,8 +51,8 @@ export class EventProcessor {
         const seed = murmurhash.v3(data);
         const isHomeChain = chain == homechain ? 1 : 0;
         return {
-            "health":  40 * isHomeChain + seed % 40,
-            "xp":  100 * isHomeChain + seed % 40,
+            "health": 40 * isHomeChain + seed % 40,
+            "xp": 100 * isHomeChain + seed % 40,
         }
     }
 
@@ -80,7 +86,7 @@ export class EventProcessor {
         }
         const target = this.users.find(u => u.address === event._targetAddress);
         if (target) {
-            target.score =  target.score > 10 ? target.score - 10 : 0;
+            target.score = target.score > 10 ? target.score - 10 : 0;
         }
     }
 
@@ -93,7 +99,7 @@ export class EventProcessor {
         if (existingAction) {
             existingAction.votes += 1;
         } else {
-            const newAction :CurrentPeriodChainActionProposalType = {
+            const newAction: CurrentPeriodChainActionProposalType = {
                 chainActionProposalHash: proposalHash,
                 sourceChain: event._sourceChain,
                 targetChain: event._action.targetChain,
@@ -103,6 +109,14 @@ export class EventProcessor {
                 votes: 1
             }
             this.currentPeriodChainActionProposals.push(newAction);
+        }
+    }
+
+    processUpgrade(event: UpgradeEvent): void {
+        console.log(`Processing Upgrade Event ${event.timestamp}, ${event._user}, TokenID: ${event._tokenId}, Timestamp: ${event.timestamp}`);
+        const asset = this.assets.find(u => u.token_id === event._tokenId);
+        if (asset) {
+            asset.xp += 123;
         }
     }
 
@@ -130,17 +144,20 @@ export class EventProcessor {
             const multichainMintEvents = await sortEvents(await getMultichainMintEvents());
             const attackEvents = await sortEvents(await getAttackEvents());
             const chainActionProposalEvents = await sortEvents(await getChainActionProposalEvents());
+            const upgradeEvents = await sortEvents(await getUpgradeEvents());
 
             const nJoinedChain = joinedChainEvents.length;
             const nMultichainMint = multichainMintEvents.length;
             const nAttack = multichainMintEvents.length;
             const nChainActionProposal = chainActionProposalEvents.length;
-            const nEvents = nJoinedChain + nMultichainMint + nAttack + nChainActionProposal;
+            const nUpgrade = upgradeEvents.length;
+            const nEvents = nJoinedChain + nMultichainMint + nAttack + nChainActionProposal + nUpgrade;
 
             let idxJoinedChain = 0;
             let idxMultichainMint = 0;
             let idxAttack = 0;
-            let idxChainActionProposal= 0;
+            let idxChainActionProposal = 0;
+            let idxUpgrade = 0;
 
             for (let i = 0; i < nEvents; i++) {
                 const nextEventTypeToProcess = indexOfSmallest([
@@ -148,28 +165,33 @@ export class EventProcessor {
                     idxMultichainMint < nMultichainMint ? multichainMintEvents[idxMultichainMint].timestamp : infiniteDate,
                     idxAttack < nAttack ? attackEvents[idxAttack].timestamp : infiniteDate,
                     idxChainActionProposal < nChainActionProposal ? chainActionProposalEvents[idxChainActionProposal].timestamp : infiniteDate,
+                    idxUpgrade < nUpgrade ? upgradeEvents[idxUpgrade].timestamp : infiniteDate,
                 ]);
 
                 if (nextEventTypeToProcess == EventType.JoinedChainEvent) {
                     this.processJoinedChain(joinedChainEvents[idxJoinedChain]);
                     idxJoinedChain += 1;
                 }
-                else if (nextEventTypeToProcess == EventType.MultichainMintEvent) { 
+                else if (nextEventTypeToProcess == EventType.MultichainMintEvent) {
                     this.processMultichainMint(multichainMintEvents[idxMultichainMint]);
                     idxMultichainMint += 1;
                 }
-                else if (nextEventTypeToProcess == EventType.AttackEvent) { 
+                else if (nextEventTypeToProcess == EventType.AttackEvent) {
                     this.processAttack(attackEvents[idxAttack]);
                     idxAttack += 1;
                 }
-                else if (nextEventTypeToProcess == EventType.ChainActionProposalEvent) { 
+                else if (nextEventTypeToProcess == EventType.ChainActionProposalEvent) {
                     this.processChainActionProposal(chainActionProposalEvents[idxChainActionProposal]);
                     idxChainActionProposal += 1;
+                }
+                else if (nextEventTypeToProcess == EventType.UpgradeEvent) {
+                    this.processUpgrade(upgradeEvents[idxUpgrade]);
+                    idxUpgrade += 1;
                 }
                 else {
                     throw new Error(`Event type not supported: ${nextEventTypeToProcess}`);
                 }
-        
+
             }
         } catch (error) {
             console.error("Error fetching events:", error);
@@ -181,9 +203,10 @@ export class EventProcessor {
 async function main() {
     const eventProcessor = new EventProcessor();
     await eventProcessor.reprocess();
-  
+
     console.log('All processed users:', eventProcessor.getUsers());
     console.log('All current action proposals:', eventProcessor.getCurrentPeriodChainActionProposals());
+    console.log('All assets:', eventProcessor.getAssets());
 }
 
 main();
