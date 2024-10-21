@@ -5,7 +5,7 @@ export enum EventType {
   ChainActionProposalEvent,
 }
 
-export enum ChainActionProposalType {
+export enum ChainActionProposalOption {
   Defend,
   Improve,
   AttackArea,
@@ -61,7 +61,7 @@ export interface ChainActionProposalEvent {
   _sourceChain: number;
   _action: {
     targetChain: number;
-    actionType: ChainActionProposalType;
+    actionType: ChainActionProposalOption;
     attackArea: number;
     attackAddress: string;
   };
@@ -90,3 +90,15 @@ export type AssetType = {
   xp: number;
   health: number;
 };
+
+export interface CurrentPeriodChainActionProposalType {
+  chainActionProposalHash: string;
+  sourceChain: number;
+  action: {
+    targetChain: number;
+    actionType: ChainActionProposalOption;
+    attackArea: number;
+    attackAddress: string;
+  };
+  votes: number;
+}

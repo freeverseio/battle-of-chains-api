@@ -1,4 +1,4 @@
-import { JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, ChainActionProposalType } from "./types";
+import { JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, ChainActionProposalOption } from "./types";
 
 const reasonableDate = 1729253900*1000;
 const reasonableBlock = 1000;
@@ -127,7 +127,7 @@ export async function getAttackEvents(): Promise<AttackEvent[]> {
     setTimeout(() => resolve(events), 1000); // Simulate a delay
   });
 }
-export async function getChainActionProposal(): Promise<ChainActionProposalEvent[]> {
+export async function getChainActionProposalEvents(): Promise<ChainActionProposalEvent[]> {
   return new Promise((resolve) => {
     const events: ChainActionProposalEvent[] = [
       {
@@ -136,7 +136,7 @@ export async function getChainActionProposal(): Promise<ChainActionProposalEvent
         _sourceChain: 1,
         _action: {
           targetChain: 137,
-          actionType: ChainActionProposalType.Defend,
+          actionType: ChainActionProposalOption.Defend,
           attackArea: 0,
           attackAddress: "0x0",
         },
@@ -153,7 +153,7 @@ export async function getChainActionProposal(): Promise<ChainActionProposalEvent
         _sourceChain: 1,
         _action: {
           targetChain: 137,
-          actionType: ChainActionProposalType.Defend,
+          actionType: ChainActionProposalOption.Defend,
           attackArea: 0,
           attackAddress: "0x0",
         },
@@ -170,7 +170,7 @@ export async function getChainActionProposal(): Promise<ChainActionProposalEvent
         _sourceChain: 1,
         _action: {
           targetChain: 137,
-          actionType: ChainActionProposalType.Improve,
+          actionType: ChainActionProposalOption.Improve,
           attackArea: 0,
           attackAddress: "0x0",
         },

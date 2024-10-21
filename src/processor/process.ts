@@ -1,8 +1,12 @@
 import { Chain } from '../db/entity';
-import { getAttackEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEventsMock';
+import { getAttackEvents, getChainActionProposalEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEventsMock';
 import { getChains } from './getChains';
 import { sortEvents } from './sortEvents';
-import { AssetType, AttackEvent, EventType, JoinedChainEvent, MultichainMintEvent, UserType } from './types';
+import {
+    EventType, ChainActionProposalOption,
+    JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent,
+    UserType, AssetType, CurrentPeriodChainActionProposalType,
+} from './types';
 import murmurhash from 'murmurhash';
 
 const infiniteDate = new Date(2050, 0, 1);
@@ -21,6 +25,7 @@ export class EventProcessor {
     private chains: Chain[] = [];
     private users: UserType[] = [];
     private assets: AssetType[] = [];
+    private currentPeriodChainActionProposals: CurrentPeriodChainActionProposalType[] = [];
 
     processJoinedChain(event: JoinedChainEvent): void {
         console.log(`Processing JoinedChain Event ${event.timestamp}, ${event._user}, HomeChain: ${event._homeChain}, Timestamp: ${event.timestamp}`);
@@ -79,12 +84,40 @@ export class EventProcessor {
         }
     }
 
+    processChainActionProposal(event: ChainActionProposalEvent): void {
+        console.log(`Processing Chain Proposal Event ${event.timestamp}, ${event._user}, Timestamp: ${event.timestamp}`);
+        const proposalSerialized = `${event._sourceChain}|${event._action.targetChain}|${event._action.actionType}|${event._action.attackArea}|${event._action.attackAddress}`;
+        const proposalHash = murmurhash.v3(proposalSerialized).toString();
+
+        const existingAction = this.currentPeriodChainActionProposals.find(u => u.chainActionProposalHash === proposalHash);
+        if (existingAction) {
+            existingAction.votes += 1;
+        } else {
+            const newAction :CurrentPeriodChainActionProposalType = {
+                chainActionProposalHash: proposalHash,
+                sourceChain: event._sourceChain,
+                action: {
+                    targetChain: event._action.targetChain,
+                    actionType: event._action.actionType,
+                    attackArea: event._action.attackArea,
+                    attackAddress: event._action.attackAddress,
+                },
+                votes: 1
+            }
+            this.currentPeriodChainActionProposals.push(newAction);
+        }
+    }
+
     getUsers(): UserType[] {
         return this.users;
     }
 
     getAssets(): AssetType[] {
         return this.assets;
+    }
+
+    getCurrentPeriodChainActionProposals(): CurrentPeriodChainActionProposalType[] {
+        return this.currentPeriodChainActionProposals;
     }
 
     async addChains(): Promise<void> {
@@ -98,21 +131,25 @@ export class EventProcessor {
             const joinedChainEvents = await sortEvents(await getJoinedChainEvents());
             const multichainMintEvents = await sortEvents(await getMultichainMintEvents());
             const attackEvents = await sortEvents(await getAttackEvents());
+            const chainActionProposalEvents = await sortEvents(await getChainActionProposalEvents());
 
             const nJoinedChain = joinedChainEvents.length;
             const nMultichainMint = multichainMintEvents.length;
             const nAttack = multichainMintEvents.length;
-            const nEvents = nJoinedChain + nMultichainMint + nAttack;
+            const nChainActionProposal = chainActionProposalEvents.length;
+            const nEvents = nJoinedChain + nMultichainMint + nAttack + nChainActionProposal;
 
             let idxJoinedChain = 0;
             let idxMultichainMint = 0;
             let idxAttack = 0;
+            let idxChainActionProposal= 0;
 
             for (let i = 0; i < nEvents; i++) {
                 const nextEventTypeToProcess = indexOfSmallest([
                     idxJoinedChain < nJoinedChain ? joinedChainEvents[idxJoinedChain].timestamp : infiniteDate,
                     idxMultichainMint < nMultichainMint ? multichainMintEvents[idxMultichainMint].timestamp : infiniteDate,
                     idxAttack < nAttack ? attackEvents[idxAttack].timestamp : infiniteDate,
+                    idxChainActionProposal < nChainActionProposal ? chainActionProposalEvents[idxChainActionProposal].timestamp : infiniteDate,
                 ]);
 
                 if (nextEventTypeToProcess == EventType.JoinedChainEvent) {
@@ -126,6 +163,10 @@ export class EventProcessor {
                 else if (nextEventTypeToProcess == EventType.AttackEvent) { 
                     this.processAttack(attackEvents[idxAttack]);
                     idxAttack += 1;
+                }
+                else if (nextEventTypeToProcess == EventType.ChainActionProposalEvent) { 
+                    this.processChainActionProposal(chainActionProposalEvents[idxChainActionProposal]);
+                    idxChainActionProposal += 1;
                 }
                 else {
                     throw new Error(`Event type not supported: ${nextEventTypeToProcess}`);
@@ -144,6 +185,7 @@ async function main() {
     await eventProcessor.reprocess();
   
     console.log('All processed users:', eventProcessor.getUsers());
+    console.log('All current action proposals:', eventProcessor.getCurrentPeriodChainActionProposals());
 }
 
 main();
