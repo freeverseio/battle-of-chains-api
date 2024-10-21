@@ -3,6 +3,12 @@ export enum EventType {
   MultichainMintEvent
 }
 
+export type Chain = {
+  chain_id: number;
+  name: string;
+  score: number;
+};
+
 export type JoinedChainEvent = {
     _user: string;
     _homeChain: number;
@@ -32,4 +38,14 @@ export type MultichainMintEvent = {
     name: string;
     joined_timestamp: Date;
     score: number;
+};
+
+export type AssetType = {
+  chain_id: number;
+  token_id: string;
+  type: string;
+  creation_timestamp: Date;
+  owner: string;
+  xp: number;
+  health: number;
 };
