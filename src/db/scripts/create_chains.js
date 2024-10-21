@@ -2,6 +2,10 @@ const chains = [
     {
         "chain_id": 137,
         "name": "Polygon PoS",
+    },
+    {
+        "chain_id": 1,
+        "name": "Ethereum",
     }
 ]
 

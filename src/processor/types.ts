@@ -94,11 +94,9 @@ export type AssetType = {
 export interface CurrentPeriodChainActionProposalType {
   chainActionProposalHash: string;
   sourceChain: number;
-  action: {
-    targetChain: number;
-    actionType: ChainActionProposalOption;
-    attackArea: number;
-    attackAddress: string;
-  };
+  targetChain: number;
+  actionType: ChainActionProposalOption;
+  attackArea: number;
+  attackAddress: string;
   votes: number;
 }

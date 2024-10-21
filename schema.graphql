@@ -13,6 +13,16 @@ type AssetOutput {
   xp: Int!
 }
 
+type ChainActionProposalOutput {
+  attack_address: String!
+  attack_area: Int!
+  proposal_hash: String!
+  source_chain_id: Int!
+  target_chain_id: Int!
+  type: Int!
+  votes: Int!
+}
+
 type ChainOutput {
   chain_id: Int!
   name: String!
@@ -21,6 +31,7 @@ type ChainOutput {
 
 type Query {
   assets: [AssetOutput!]!
+  chain_action_proposals: [ChainActionProposalOutput!]!
   chains: [ChainOutput!]!
   reprocess: Float!
   status: [String!]!

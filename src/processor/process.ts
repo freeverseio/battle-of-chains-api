@@ -96,12 +96,10 @@ export class EventProcessor {
             const newAction :CurrentPeriodChainActionProposalType = {
                 chainActionProposalHash: proposalHash,
                 sourceChain: event._sourceChain,
-                action: {
-                    targetChain: event._action.targetChain,
-                    actionType: event._action.actionType,
-                    attackArea: event._action.attackArea,
-                    attackAddress: event._action.attackAddress,
-                },
+                targetChain: event._action.targetChain,
+                actionType: event._action.actionType,
+                attackArea: event._action.attackArea,
+                attackAddress: event._action.attackAddress,
                 votes: 1
             }
             this.currentPeriodChainActionProposals.push(newAction);

@@ -1,9 +1,10 @@
 import { Resolver, Query, Ctx, Int } from 'type-graphql';
 import { AppDataSource } from '../db/AppDataSource';
-import { UserLog, Chain, User, Asset } from '../db/entity';
+import { UserLog, Chain, User, Asset, ChainActionProposal } from '../db/entity';
 import { ChainOutput } from '../types/chain';
 import { UserOutput } from '../types/user';
 import { AssetOutput } from '../types/asset';
+import { ChainActionProposalOutput } from '../types/chain_action_proposal';
 import { EventProcessor } from '../processor/process';
 @Resolver()
 export class AttackResolver {
@@ -42,6 +43,14 @@ export class AssetResolver {
     const repository = AppDataSource.getRepository(Asset);
     const allAssets = await repository.find();
     return allAssets.map(entry => new AssetOutput(entry));;
+  }
+}
+export class ChainActionProposalResolver {
+  @Query(() => [ChainActionProposalOutput])
+  async chain_action_proposals(@Ctx() context: any): Promise<ChainActionProposalOutput[]> {
+    const repository = AppDataSource.getRepository(ChainActionProposal);
+    const allProposals = await repository.find();
+    return allProposals.map(entry => new ChainActionProposalOutput(entry));;
   }
 }
 export class ReprocessResolver {
@@ -87,6 +96,28 @@ export class ReprocessResolver {
       const repositoryAssets = AppDataSource.getRepository(Asset);
       await repositoryAssets.save(assetsToInsert);
     }
+
+    // Add chain action proposals
+    const processedProposals = eventProcessor.getCurrentPeriodChainActionProposals();
+    const proposalsToInsert: ChainActionProposal[] = [];
+    for (let proposal of processedProposals) {
+      const newProposal = new ChainActionProposal();
+      newProposal.proposal_hash = proposal.chainActionProposalHash;
+      newProposal.source_chain_id = proposal.sourceChain;
+      newProposal.target_chain_id = proposal.targetChain;
+      newProposal.type = proposal.actionType;
+      newProposal.attack_area = proposal.attackArea;
+      newProposal.attack_address = proposal.attackAddress;
+      newProposal.votes = proposal.votes;
+      proposalsToInsert.push(newProposal);
+    }
+    console.log('Chain Actions:');
+    console.log(proposalsToInsert);
+    if (proposalsToInsert.length > 0) {
+      const repositoryAssets = AppDataSource.getRepository(ChainActionProposal);
+      await repositoryAssets.save(proposalsToInsert);
+    }
+
 
     return processedUsers.length + assetsToInsert.length;
   }
