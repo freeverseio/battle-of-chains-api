@@ -41,3 +41,18 @@ CREATE TABLE public.asset (
 	CONSTRAINT asset_owner_fkey FOREIGN KEY (owner) REFERENCES public.user(address),
 	CONSTRAINT asset_chain_id_fkey FOREIGN KEY (chain_id) REFERENCES public.chain(chain_id)
 );
+
+-- DROP TABLE public.chain_action_proposals;
+
+CREATE TABLE public.chain_action_proposal (
+	proposal_hash text NOT NULL,
+	source_chain_id int4 NOT NULL,
+	target_chain_id int4,
+	type int4 NOT NULL,
+	attack_area int4,
+	attack_address text,
+	votes int4 NOT NULL,
+	CONSTRAINT chain_action_proposal_pkey PRIMARY KEY (proposal_hash),
+	CONSTRAINT source_chain_id_fkey FOREIGN KEY (source_chain_id) REFERENCES public.chain(chain_id),
+	CONSTRAINT target_chain_id_fkey FOREIGN KEY (target_chain_id) REFERENCES public.chain(chain_id)
+);
