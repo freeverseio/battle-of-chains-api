@@ -1,4 +1,4 @@
-import { JoinedChainEvent, MultichainMintEvent, AttackEvent } from "./types";
+import { JoinedChainEvent, MultichainMintEvent, AttackEvent, ChainActionProposalEvent, ChainActionProposalType } from "./types";
 
 const reasonableDate = 1729253900*1000;
 const reasonableBlock = 1000;
@@ -122,6 +122,64 @@ export async function getAttackEvents(): Promise<AttackEvent[]> {
         blockHash: "0xghi789",
         txHash: "0xjkl012",
         logIndex: 2,
+      },
+    ];
+    setTimeout(() => resolve(events), 1000); // Simulate a delay
+  });
+}
+export async function getChainActionProposal(): Promise<ChainActionProposalEvent[]> {
+  return new Promise((resolve) => {
+    const events: ChainActionProposalEvent[] = [
+      {
+        _operator: "0x3311111111111111111111111111111111111133",
+        _user: "0x2211111111111111111111111111111111111122",
+        _sourceChain: 1,
+        _action: {
+          targetChain: 137,
+          actionType: ChainActionProposalType.Defend,
+          attackArea: 0,
+          attackAddress: "0x0",
+        },
+        _comment: "Please do this, it benefits us all",
+        timestamp: new Date(reasonableDate + 53200 * oneSec),
+        blockNumber: reasonableBlock + 5000,
+        blockHash: "0xghi78ddd9",
+        txHash: "0xjkl01ss2",
+        logIndex: 0,
+      },
+      {
+        _operator: "0x2211111111111111111111111111111111111122",
+        _user: "0x2211111111111111111111111111111111111122",
+        _sourceChain: 1,
+        _action: {
+          targetChain: 137,
+          actionType: ChainActionProposalType.Defend,
+          attackArea: 0,
+          attackAddress: "0x0",
+        },
+        _comment: "Please do this, it benefits us all",
+        timestamp: new Date(reasonableDate + 53200 * oneSec),
+        blockNumber: reasonableBlock + 5000,
+        blockHash: "0xghi78ddd9",
+        txHash: "0xjkl01ss2",
+        logIndex: 1,
+      },
+      {
+        _operator: "0x2211111111111111111111111111111111111122",
+        _user: "0x2211111111111111111111111111111111111122",
+        _sourceChain: 1,
+        _action: {
+          targetChain: 137,
+          actionType: ChainActionProposalType.Improve,
+          attackArea: 0,
+          attackAddress: "0x0",
+        },
+        _comment: "Please do this, it benefits us all",
+        timestamp: new Date(reasonableDate + 93200 * oneSec),
+        blockNumber: reasonableBlock + 9000,
+        blockHash: "0xghi78dsddd9",
+        txHash: "0xjkl01ssds2",
+        logIndex: 0,
       },
     ];
     setTimeout(() => resolve(events), 1000); // Simulate a delay

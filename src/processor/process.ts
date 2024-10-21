@@ -1,5 +1,5 @@
 import { Chain } from '../db/entity';
-import { getAttackEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEvents';
+import { getAttackEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEventsMock';
 import { getChains } from './getChains';
 import { sortEvents } from './sortEvents';
 import { AssetType, AttackEvent, EventType, JoinedChainEvent, MultichainMintEvent, UserType } from './types';

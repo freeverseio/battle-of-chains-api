@@ -1,7 +1,15 @@
 export enum EventType {
   JoinedChainEvent,
   MultichainMintEvent,
-  AttackEvent
+  AttackEvent,
+  ChainActionProposalEvent,
+}
+
+export enum ChainActionProposalType {
+  Defend,
+  Improve,
+  AttackArea,
+  AttackAddress
 }
 
 export type Chain = {
@@ -40,6 +48,24 @@ export interface AttackEvent {
   _attacker: string;
   _targetChain: number;
   _strategy: number;
+  timestamp: Date;
+  blockNumber: number;
+  blockHash: string;
+  txHash: string;
+  logIndex: number;
+}
+
+export interface ChainActionProposalEvent {
+  _operator: string;
+  _user: string;
+  _sourceChain: number;
+  _action: {
+    targetChain: number;
+    actionType: ChainActionProposalType;
+    attackArea: number;
+    attackAddress: string;
+  };
+  _comment: string;
   timestamp: Date;
   blockNumber: number;
   blockHash: string;
