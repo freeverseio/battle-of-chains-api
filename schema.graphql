@@ -34,8 +34,15 @@ type Query {
   chain_action_proposals: [ChainActionProposalOutput!]!
   chains: [ChainOutput!]!
   reprocess: Float!
-  status: [String!]!
+  user_logs: [UserLogOutput!]!
   users: [UserOutput!]!
+}
+
+type UserLogOutput {
+  comment: String!
+  id: Int!
+  timestamp: Int!
+  user_address: String!
 }
 
 type UserOutput {

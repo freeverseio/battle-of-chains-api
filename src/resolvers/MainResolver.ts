@@ -6,19 +6,14 @@ import { UserOutput } from '../types/user';
 import { AssetOutput } from '../types/asset';
 import { ChainActionProposalOutput } from '../types/chain_action_proposal';
 import { EventProcessor } from '../processor/process';
+import { UserLogOutput } from '../types';
 @Resolver()
-export class AttackResolver {
-  @Query(() => [String])
-  async status(@Ctx() context: any): Promise<String[]> {
+export class UserLogResolver {
+  @Query(() => [UserLogOutput])
+  async user_logs(@Ctx() context: any): Promise<UserLogOutput[]> {
     const repository = AppDataSource.getRepository(UserLog);
-    const count = await repository.count();
-    console.log('COUNTED BATTLE : ', count);
-    const userlog = new UserLog();
-    userlog.timestamp = Math.floor(Math.random() * 1000000);
-    userlog.comment = "Jurgen has a dog";
-    await repository.insert(userlog);
-    const all = await repository.find();
-    return all.map(entry => entry.comment);
+    const allLogs = await repository.find();
+    return allLogs.map(entry => new UserLogOutput(entry));
   }
 }
 export class ChainResolver {
@@ -26,7 +21,7 @@ export class ChainResolver {
   async chains(@Ctx() context: any): Promise<ChainOutput[]> {
     const repository = AppDataSource.getRepository(Chain);
     const allChains = await repository.find();
-    return allChains.map(entry => new ChainOutput(entry));;
+    return allChains.map(entry => new ChainOutput(entry));
   }
 }
 export class UserResolver {
@@ -42,7 +37,7 @@ export class AssetResolver {
   async assets(@Ctx() context: any): Promise<AssetOutput[]> {
     const repository = AppDataSource.getRepository(Asset);
     const allAssets = await repository.find();
-    return allAssets.map(entry => new AssetOutput(entry));;
+    return allAssets.map(entry => new AssetOutput(entry));
   }
 }
 export class ChainActionProposalResolver {
@@ -50,7 +45,7 @@ export class ChainActionProposalResolver {
   async chain_action_proposals(@Ctx() context: any): Promise<ChainActionProposalOutput[]> {
     const repository = AppDataSource.getRepository(ChainActionProposal);
     const allProposals = await repository.find();
-    return allProposals.map(entry => new ChainActionProposalOutput(entry));;
+    return allProposals.map(entry => new ChainActionProposalOutput(entry));
   }
 }
 export class ReprocessResolver {

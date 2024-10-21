@@ -1,11 +1,3 @@
--- DROP TABLE public.user_logs;
-
-CREATE TABLE public.user_logs (
-	timestamp int8 NOT NULL,
-	comment text,
-	CONSTRAINT user_log_pkey PRIMARY KEY (timestamp, comment)
-);
-
 -- DROP TABLE public.chain;
 
 CREATE TABLE public.chain (
@@ -25,6 +17,16 @@ CREATE TABLE public.user (
 	score int8 NOT NULL,
 	CONSTRAINT user_pkey PRIMARY KEY (address),
 	CONSTRAINT user_homechain_fkey FOREIGN KEY (homechain) REFERENCES public.chain(chain_id)
+);
+
+-- DROP TABLE public.user_logs;
+
+CREATE TABLE public.user_logs (
+    id SERIAL PRIMARY KEY,
+	user_address text NOT NULL,
+	timestamp int8 NOT NULL,
+	comment text NOT NULL,
+	CONSTRAINT user_fkey FOREIGN KEY (user_address) REFERENCES public.user(address)
 );
 
 -- DROP TABLE public.asset;
