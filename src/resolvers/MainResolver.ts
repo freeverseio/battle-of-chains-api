@@ -51,17 +51,18 @@ export class ReprocessResolver {
     await eventProcessor.reprocess();
     const processedUsers = eventProcessor.getUsers();
     const repository = AppDataSource.getRepository(User);
+    const usersToInsert: User[] = [];
     for (let user of processedUsers) {
-      const existingUser = await repository.findOne({ where: { address: user.address } });
-      if (!existingUser) {
-        const newUser = new User();
-        newUser.address = user.address;
-        newUser.name = user.name;
-        newUser.homechain = user.homechain;
-        newUser.joined_timestamp = user.joined_timestamp.getDate();
-        newUser.score = user.score;
-        repository.insert(newUser);
-      }
+      const newUser = new User();
+      newUser.address = user.address;
+      newUser.name = user.name;
+      newUser.homechain = user.homechain;
+      newUser.joined_timestamp = user.joined_timestamp.getDate();
+      newUser.score = user.score;
+      usersToInsert.push(newUser);
+    }
+    if (usersToInsert.length > 0) {
+      await repository.save(usersToInsert);
     }
     return processedUsers.length;
   }
