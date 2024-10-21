@@ -32,7 +32,21 @@ export type MultichainMintEvent = {
     logIndex: number;
   }
 
-  export type UserType = {
+export interface AttackEvent {
+  _tokenIds: string[];
+  _targetAddress: string;
+  _operator: string;
+  _attacker: string;
+  _targetChain: number;
+  _strategy: number;
+  timestamp: Date;
+  blockNumber: number;
+  blockHash: string;
+  txHash: string;
+  logIndex: number;
+}
+
+export type UserType = {
     address: string;
     homechain: number;
     name: string;

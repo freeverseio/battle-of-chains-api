@@ -1,8 +1,8 @@
 import { Chain } from '../db/entity';
-import { getJoinedChainEvents, getMultichainMintEvents } from './getEvents';
+import { getAttackEvents, getJoinedChainEvents, getMultichainMintEvents } from './getEvents';
 import { getChains } from './getChains';
-import { sortJoinedChanEvents, sortMultichainMintEvents } from './sortEvents';
-import { AssetType, EventType, JoinedChainEvent, MultichainMintEvent, UserType } from './types';
+import { sortEvents } from './sortEvents';
+import { AssetType, AttackEvent, EventType, JoinedChainEvent, MultichainMintEvent, UserType } from './types';
 import murmurhash from 'murmurhash';
 
 const infiniteDate = new Date(2050, 0, 1);
@@ -47,6 +47,10 @@ export class EventProcessor {
 
 
     processMultichainMint(event: MultichainMintEvent): void {
+        // Assumption: 
+        // * it cannot happen that a "user" does not exist in the tables, since joining is a must for minting
+        // * it cannot happen that a "homechain" does not exist in the tables, since joining is a must for minting
+        // TODO: add check that type exists
         console.log(`Processing MultichainMint Event ${event.timestamp}, ${event._user}, TokenID: ${event._tokenId}, Timestamp: ${event.timestamp}`);
         for (let chain of this.chains) {
             const stats = this.createAssetStats(chain.chain_id, event._homeChain, event.txHash, event._tokenId, event._type);
@@ -62,6 +66,27 @@ export class EventProcessor {
             this.assets.push(newAsset);
         }
     }
+
+    // processAttack(event: AttackEvent): void {
+    //     // Assumption: 
+    //     // * it cannot happen that a "user" does not exist in the tables, since joining is a must for minting
+    //     // * it cannot happen that a "homechain" does not exist in the tables, since joining is a must for minting
+    //     // TODO: add check that type exists
+    //     console.log(`Processing MultichainMint Event ${event.timestamp}, ${event._user}, TokenID: ${event._tokenId}, Timestamp: ${event.timestamp}`);
+    //     for (let chain of this.chains) {
+    //         const stats = this.createAssetStats(chain.chain_id, event._homeChain, event.txHash, event._tokenId, event._type);
+    //         const newAsset: AssetType = {
+    //             chain_id: chain.chain_id,
+    //             token_id: (event._tokenId).toString(),
+    //             type: (event._type).toString(),
+    //             creation_timestamp: event.timestamp,
+    //             owner: event._user,
+    //             xp: stats.xp,
+    //             health: stats.health,
+    //         };
+    //         this.assets.push(newAsset);
+    //     }
+    // }
 
     getUsers(): UserType[] {
         return this.users;
@@ -79,8 +104,9 @@ export class EventProcessor {
         try {
             await this.addChains();
 
-            const joinedChainEvents = await sortJoinedChanEvents(await getJoinedChainEvents());
-            const multichainMintEvents = await sortMultichainMintEvents(await getMultichainMintEvents());
+            const joinedChainEvents = await sortEvents(await getJoinedChainEvents());
+            const multichainMintEvents = await sortEvents(await getMultichainMintEvents());
+            // const attackEvents = await sortAttackEvents(await getAttackEvents());
 
             const nJoinedChain = joinedChainEvents.length;
             const nMultichainMint = multichainMintEvents.length;
@@ -88,11 +114,13 @@ export class EventProcessor {
 
             let idxJoinedChain = 0;
             let idxMultichainMint = 0;
+            let idxAttack = 0;
 
             for (let i = 0; i < nEvents; i++) {
                 const nextEventTypeToProcess = indexOfSmallest([
                     idxJoinedChain < nJoinedChain ? joinedChainEvents[idxJoinedChain].timestamp : infiniteDate,
                     idxMultichainMint < nMultichainMint ? multichainMintEvents[idxMultichainMint].timestamp : infiniteDate,
+                    // idxAttack < nMultichainMint ? multichainMintEvents[idxAttack].timestamp : infiniteDate,
                 ]);
 
                 if (nextEventTypeToProcess == EventType.JoinedChainEvent) {

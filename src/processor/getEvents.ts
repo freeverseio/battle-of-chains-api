@@ -1,4 +1,4 @@
-import { JoinedChainEvent, MultichainMintEvent } from "./types";
+import { JoinedChainEvent, MultichainMintEvent, AttackEvent } from "./types";
 
 const reasonableDate = 1729253900*1000;
 const reasonableBlock = 1000;
@@ -77,7 +77,52 @@ export async function getMultichainMintEvents(): Promise<MultichainMintEvent[]> 
         txHash: "0xjkl012",
         logIndex: 1,
       },
-
+    ];
+    setTimeout(() => resolve(events), 1000); // Simulate a delay
+  });
+}
+export async function getAttackEvents(): Promise<AttackEvent[]> {
+  return new Promise((resolve) => {
+    const events: AttackEvent[] = [
+      {
+        _tokenIds: ['123456789', '9123456789'],
+        _targetAddress: "0x1111111111111111111111111111111111111111",
+        _operator: "0x2211111111111111111111111111111111111122",
+        _attacker: "0x2211111111111111111111111111111111111122",
+        _targetChain: 137,
+        _strategy: 0,
+        timestamp: new Date(reasonableDate + 2000 * oneSec),
+        blockNumber: reasonableBlock +  20 * oneSec,
+        blockHash: "0xghi789232",
+        txHash: "0xjkl012321",
+        logIndex: 0,
+      },
+      {
+        _tokenIds: [],
+        _targetAddress: "0x1111111111111111111111111111111111111111",
+        _operator: "0x3311111111111111111111111111111111111133",
+        _attacker: "0x2211111111111111111111111111111111111122",
+        _targetChain: 137,
+        _strategy: 0,
+        timestamp: new Date(reasonableDate + oneSec),
+        blockNumber: reasonableBlock + 1000,
+        blockHash: "0xghi789",
+        txHash: "0xjkl012",
+        logIndex: 2,
+      },
+      {
+        _tokenIds: [],
+        _targetAddress: "0x2211111111111111111111111111111111111122",
+        _operator: "0x3311111111111111111111111111111111111133",
+        _attacker: "0x2211111111111111111111111111111111111122",
+        _targetChain: 1,
+        _strategy: 0,
+        timestamp: new Date(reasonableDate + oneSec),
+        blockNumber: reasonableBlock + 1000,
+        blockHash: "0xghi789",
+        txHash: "0xjkl012",
+        logIndex: 2,
+      },
     ];
     setTimeout(() => resolve(events), 1000); // Simulate a delay
   });
