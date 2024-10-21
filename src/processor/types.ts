@@ -1,6 +1,7 @@
 export enum EventType {
   JoinedChainEvent,
-  MultichainMintEvent
+  MultichainMintEvent,
+  AttackEvent
 }
 
 export type Chain = {

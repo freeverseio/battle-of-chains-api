@@ -112,7 +112,7 @@ export async function getAttackEvents(): Promise<AttackEvent[]> {
       },
       {
         _tokenIds: [],
-        _targetAddress: "0x2211111111111111111111111111111111111122",
+        _targetAddress: "0x3311111111111111111111111111111111111133",
         _operator: "0x3311111111111111111111111111111111111133",
         _attacker: "0x2211111111111111111111111111111111111122",
         _targetChain: 1,
